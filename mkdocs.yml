@@ -1,0 +1,9 @@
+site_name: vhcalc
+nav:
+  - Home: README.md
+  - Contributing: contributing.md
+theme:
+  name: 'material'
+repo_url: https://github.com/yoyonel/vhcalc
+remote_branch: gh-pages
+remote_name: origin
