@@ -73,8 +73,8 @@ warn_unused_configs = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = "tests"
-addopts = "--strict-markers"
+testpaths = "tests vhcalc"
+addopts = "--strict-markers --doctest-modules"
 norecursedirs = [
     ".*",
     "build",

@@ -5,7 +5,7 @@ from typing import Iterator, Tuple
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
-from vhcalc.tools.ffmeg_extract_frame import FRAME_SIZE
+from vhcalc.tools.imghash import FRAME_SIZE
 
 
 @dataclass
