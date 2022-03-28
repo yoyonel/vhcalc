@@ -17,3 +17,13 @@ def test_cli_export_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
     assert result.exit_code == 0
     expected_size_binary_file = meta.nb_frames * 8
     assert Path(binary_img_hash_file).stat().st_size == expected_size_binary_file
+
+
+def test_cli_version(cli_runner):
+    result = cli_runner.invoke(
+        export_imghash_from_media,
+        args="--version",
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    assert result.output == "export-imghash-from-media, version 0.0.1\n"

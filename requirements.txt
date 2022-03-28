@@ -2,6 +2,8 @@ bitstring==3.1.9 \
     --hash=sha256:e3e340e58900a948787a05e8c08772f1ccbe133f6f41fe3f0fa19a18a22bbf4f \
     --hash=sha256:0de167daa6a00c9386255a7cac931b45e6e24e0ad7ea64f1f92a64ac23ad4578 \
     --hash=sha256:a5848a3f63111785224dca8bb4c0a75b62ecdef56a042c8d6be74b16f7e860e7
+click-path==0.0.5; python_version >= "3.6" \
+    --hash=sha256:ff5f968e55648640f745a646f136866bbb552bfeca0224aef9216d0c122004ea
 click-pathlib==2020.3.13.0 \
     --hash=sha256:e74a7a209699107d6aa884b3070e1f81e67dea10acf2244fbd3a4eafad207c1c \
     --hash=sha256:37faab20677ce754176378cd9be82fd9e7e28b5d5fa4f1cc89613cb6b9fe9d97
@@ -144,6 +146,9 @@ scipy==1.6.1; python_version >= "3.7" \
 six==1.16.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254 \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926
+typeguard==2.13.3; python_full_version >= "3.5.3" and python_version >= "3.6" \
+    --hash=sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1 \
+    --hash=sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4
 win32-setctime==1.1.0; sys_platform == "win32" and python_version >= "3.5" \
     --hash=sha256:231db239e959c2fe7eb1d7dc129f11172354f98361c4fa2d6d2d7e278baa8aad \
     --hash=sha256:15cf5750465118d6929ae4de4eb46e8edae9a5634350c01ba582df868e932cb2

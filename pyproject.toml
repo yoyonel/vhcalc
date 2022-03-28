@@ -136,6 +136,7 @@ ImageHash = "^4.2.1"
 imageio-ffmpeg = "^0.4.5"
 rich = {extras = ["spinner"], version = "^11.2.0"}
 colorama = "0.4.4"
+click-path = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 # task management

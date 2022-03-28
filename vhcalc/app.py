@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import pathlib
 from importlib.metadata import version
-from typing import Optional
+from typing import Iterable, Optional
 
 import click
+from click_path import GlobPaths
 from loguru import logger
 
 import vhcalc.services as services
@@ -14,17 +15,16 @@ import vhcalc.services as services
 )
 @click.version_option(version=version(__package__ or __name__))
 @click.option(
-    "--media",
+    "--medias_pattern",
     "-r",
     required=True,
-    type=click.Path(
-        exists=True,
-        readable=True,
-        resolve_path=True,
-        allow_dash=False,
-        path_type=pathlib.Path,
+    type=GlobPaths(
+        files_okay=True,
+        dirs_okay=False,
+        readable_only=True,
+        at_least_one=True,
     ),
-    help="Path to media",
+    help="Pattern to find medias",
 )
 @click.option(
     "--output-file",
@@ -35,9 +35,10 @@ import vhcalc.services as services
 )
 @logger.catch
 def export_imghash_from_media(
-    media: pathlib.Path, output_file: Optional[pathlib.Path]
+    medias_pattern: Iterable[pathlib.Path], output_file: Optional[pathlib.Path]
 ) -> None:
     """This script exporting binary images hashes (fingerprints)
     from (any) media (video file)
     \f"""
-    services.export_imghash_from_media(media, output_file)
+    for media in medias_pattern:
+        services.export_imghash_from_media(media, output_file)

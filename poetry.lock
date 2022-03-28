@@ -136,6 +136,21 @@ python-versions = ">=3.6"
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "click-path"
+version = "0.0.5"
+description = "A library of path-like types for the Click command-line library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+click = "*"
+typeguard = "*"
+
+[package.extras]
+dev = ["pytest", "pytest-cov", "pylint", "mypy", "flake8", "snoop"]
+
+[[package]]
 name = "click-pathlib"
 version = "2020.3.13.0"
 description = "'A Python click type which is similar to click.Path but returns a pathlib Path'"
@@ -1024,6 +1039,18 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [[package]]
+name = "typeguard"
+version = "2.13.3"
+description = "Run-time type checker for Python"
+category = "main"
+optional = false
+python-versions = ">=3.5.3"
+
+[package.extras]
+doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["pytest", "typing-extensions", "mypy"]
+
+[[package]]
 name = "typing-extensions"
 version = "4.1.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
@@ -1115,7 +1142,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "5a9aeab66baa78e48d7c74d82a9091ddedc488020f341dd5ea170fb36b4df629"
+content-hash = "ecc42f1df144aae090d673ebfc443ee31577ae484577cd8e89ebb235b4b7057f"
 
 [metadata.files]
 argcomplete = [
@@ -1162,6 +1189,9 @@ charset-normalizer = [
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
     {file = "click-8.0.4.tar.gz", hash = "sha256:8458d7b1287c5fb128c90e23381cf99dcde74beaf6c7ff6384ce84d6fe090adb"},
+]
+click-path = [
+    {file = "click-path-0.0.5.tar.gz", hash = "sha256:ff5f968e55648640f745a646f136866bbb552bfeca0224aef9216d0c122004ea"},
 ]
 click-pathlib = [
     {file = "click-pathlib-2020.3.13.0.tar.gz", hash = "sha256:e74a7a209699107d6aa884b3070e1f81e67dea10acf2244fbd3a4eafad207c1c"},
@@ -1738,6 +1768,10 @@ tomli = [
 tomlkit = [
     {file = "tomlkit-0.10.0-py3-none-any.whl", hash = "sha256:cac4aeaff42f18fef6e07831c2c2689a51df76cf2ede07a6a4fa5fcb83558870"},
     {file = "tomlkit-0.10.0.tar.gz", hash = "sha256:d99946c6aed3387c98b89d91fb9edff8f901bf9255901081266a84fb5604adcd"},
+]
+typeguard = [
+    {file = "typeguard-2.13.3-py3-none-any.whl", hash = "sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1"},
+    {file = "typeguard-2.13.3.tar.gz", hash = "sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},
