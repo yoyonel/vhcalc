@@ -1,3 +1,4 @@
+from importlib.metadata import version
 from pathlib import Path
 
 from vhcalc.app import export_imghash_from_media
@@ -26,4 +27,6 @@ def test_cli_version(cli_runner):
         catch_exceptions=False,
     )
     assert result.exit_code == 0
-    assert result.output == "export-imghash-from-media, version 0.0.1\n"
+    app_name_expected = "export-imghash-from-media"
+    version_expected = version("vhcalc")
+    assert result.output == f"{app_name_expected}, version {version_expected}\n"
