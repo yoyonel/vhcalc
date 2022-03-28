@@ -10,6 +10,7 @@
 # Docker
 docker-compose.yml
 .docker
+Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

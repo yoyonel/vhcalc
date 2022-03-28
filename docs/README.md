@@ -19,6 +19,20 @@ It's a client-side library that implements a custom algorithm for extracting vid
 
 ## Usage
 
+```shell
+╰─ export_imghash_from_media --help  
+Usage: export_imghash_from_media [OPTIONS]
+
+  This script exporting binary images hashes (fingerprints) from (any) media
+  (video file)
+
+Options:
+  --version                       Show the version and exit.
+  -r, --medias_pattern PATH-OR-GLOB
+                                  Pattern to find medias  [required]
+  -o, --output-file PATH          File where to write images hashes.
+  --help                          Show this message and exit.
+```
 
 ## Contributing
 See [Contributing](contributing.md)
