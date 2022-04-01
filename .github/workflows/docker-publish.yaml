@@ -1,9 +1,11 @@
-name: Publish Python package to PyPI
+name: Build and Publish Docker image to DockerHub
 
 on:
+    # run it on push to the default repository branch
     push:
-        tags:
-            - '*'
+        branches: [main]
+    # run it during pull request
+    pull_request:
 
 jobs:
     push_to_registry:
