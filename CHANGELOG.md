@@ -1,4 +1,10 @@
 # Changelog
+## 0.2.1 (2022-04-01)
+
+### Fix
+
+- ci - docker build&publish image
+
 ## 0.2.0 (2022-03-28)
 
 ### Fix
