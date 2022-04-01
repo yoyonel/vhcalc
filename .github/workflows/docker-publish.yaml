@@ -1,36 +1,41 @@
 name: Build and Publish Docker image to DockerHub
 
 on:
-    # run it on push to the default repository branch
     push:
-        branches: [main]
-    # run it during pull request
+        branches:
+            - 'main'
+        tags:
+            - 'v*'
     pull_request:
+        branches:
+            - 'main'
 
 jobs:
-    push_to_registry:
-        name: Push Docker image to Docker Hub
+    docker:
         runs-on: ubuntu-latest
         steps:
-            -   name: Check out the repo
-                uses: actions/checkout@v3
-
-            -   name: Log in to Docker Hub
-                uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-                with:
-                    username: ${{ secrets.DOCKER_USERNAME }}
-                    password: ${{ secrets.DOCKER_PASSWORD }}
-
-            -   name: Extract metadata (tags, labels) for Docker
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Docker meta
                 id: meta
-                uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+                uses: docker/metadata-action@v3
                 with:
                     images: yoyonel/vhcalc
-
-            -   name: Build and push Docker image
-                uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+                    tags: |
+                        type=ref,event=branch
+                        type=ref,event=pr
+                        type=semver,pattern={{version}}
+                        type=semver,pattern={{major}}.{{minor}}
+            -   name: Login to DockerHub
+                if: github.event_name != 'pull_request'
+                uses: docker/login-action@v1
+                with:
+                    username: ${{ secrets.DOCKERHUB_USERNAME }}
+                    password: ${{ secrets.DOCKERHUB_TOKEN }}
+            -   name: Build and push
+                uses: docker/build-push-action@v2
                 with:
                     context: .
-                    push: true
+                    push: ${{ github.event_name != 'pull_request' }}
                     tags: ${{ steps.meta.outputs.tags }}
                     labels: ${{ steps.meta.outputs.labels }}
