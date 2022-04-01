@@ -7,6 +7,7 @@
 [![PyPI Package download count (per month)](https://img.shields.io/pypi/dm/vhcalc?style=flat-square)](https://pypi.org/project/vhcalc/)
 [![Supported versions](https://img.shields.io/pypi/pyversions/vhcalc.svg?style=flat-square)](https://pypi.org/project/vhcalc/)
 
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/yoyonel/vhcalc?sort=semver)](https://hub.docker.com/r/yoyonel/vhcalc/)
 
 # vhcalc
 
@@ -19,8 +20,28 @@ It's a client-side library that implements a custom algorithm for extracting vid
 
 ## Usage
 
-```shell
-╰─ export_imghash_from_media --help  
+```sh
+$ export_imghash_from_media --help  
+Usage: export_imghash_from_media [OPTIONS]
+
+  This script exporting binary images hashes (fingerprints) from (any) media
+  (video file)
+
+Options:
+  --version                       Show the version and exit.
+  -r, --medias_pattern PATH-OR-GLOB
+                                  Pattern to find medias  [required]
+  -o, --output-file PATH          File where to write images hashes.
+  --help                          Show this message and exit.
+```
+
+
+## Docker
+
+Docker hub: [yoyonel/vhcalc](https://hub.docker.com/r/yoyonel/vhcalc/)
+
+```sh
+$ docker run -it yoyonel/vhcalc:main --help
 Usage: export_imghash_from_media [OPTIONS]
 
   This script exporting binary images hashes (fingerprints) from (any) media
