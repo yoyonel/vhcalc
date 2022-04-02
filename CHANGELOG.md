@@ -1,4 +1,10 @@
 # Changelog
+## 0.2.2 (2022-04-02)
+
+### Fix
+
+- **coverage**: fix ci coverage step
+
 ## 0.2.1 (2022-04-01)
 
 ### Fix
