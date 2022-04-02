@@ -115,6 +115,8 @@ norecursedirs = [
         '*/virtualenvs/*',
         '*/tests/*'
     ]
+    [tool.coverage.run]
+    relative_files = true
 
 [tool.poetry]
 name = "vhcalc"
@@ -147,7 +149,7 @@ pytest-cov = "^2.8.1"
 pytest-mock = "^3.0.0"
 pytest-xdist = "^1.31.0"
 hypothesis = "^5.8.0"
-coverage = {extras = ["toml"], version = "^5.0.4"}
+coverage = {extras = ["toml"], version = "^6.3.2"}
 # style
 flake8 = "^3.7.9"
 pylint = "^2.7.0"
