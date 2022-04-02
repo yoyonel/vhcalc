@@ -29,6 +29,21 @@ jobs:
         run: |
           inv secure
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: |
-          inv test -a
+          inv test.cov
+
+      - name: Coveralls
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+            parallel: true
+            flag-name: Run tests with coverage
+
+  coveralls_finish:
+      needs: check
+      runs-on: ubuntu-latest
+      steps:
+          -   name: Coveralls Finished
+              uses: AndreMiras/coveralls-python-action@develop
+              with:
+                  parallel-finished: true
