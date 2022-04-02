@@ -21,6 +21,10 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.1.1
+    hooks:
+        - id: yamlfmt
 
   - repo: local
     hooks:
