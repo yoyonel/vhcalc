@@ -9,6 +9,8 @@
 
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/yoyonel/vhcalc?sort=semver)](https://hub.docker.com/r/yoyonel/vhcalc/)
 
+[![Coverage Status](https://coveralls.io/repos/github/yoyonel/vhcalc/badge.svg?branch=main)](https://coveralls.io/github/yoyonel/vhcalc?branch=main)
+
 # vhcalc
 
 It's a client-side library that implements a custom algorithm for extracting video hashes (fingerprints) from any video source.
