@@ -33,6 +33,7 @@ jobs:
             - name: Run tests with coverage
               run: |
                   inv test.cov
+                  poetry run coverage lcov -o ./coverage/lcov.info
 
             - name: Coveralls
               uses: coverallsapp/github-action@master
