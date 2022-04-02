@@ -35,10 +35,9 @@ jobs:
                   inv test.cov
 
             - name: Coveralls
-              uses: AndreMiras/coveralls-python-action@develop
+              uses: coverallsapp/github-action@master
               with:
-                  parallel: true
-                  flag-name: Run tests with coverage
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
 
     coveralls_finish:
         needs: check

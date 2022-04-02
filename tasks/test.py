@@ -15,4 +15,4 @@ def run(ctx, allow_no_tests=False):
 @task
 def cov(ctx):
     """Run test coverage check"""
-    ctx.run(f"{VENV_PREFIX} pytest --cov=vhcalc tests/", pty=True)
+    ctx.run(f"{VENV_PREFIX} pytest --cov=vhcalc --cov-report xml tests/", pty=True)
