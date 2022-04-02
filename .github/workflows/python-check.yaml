@@ -1,49 +1,50 @@
+---
 name: New pull request received
 
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out
+              uses: actions/checkout@main
+              with:
+                  fetch-depth: 0
 
-      - name: Set up Python 3.9
-        uses: actions/setup-python@main
-        with:
-          python-version: 3.9
+            - name: Set up Python 3.9
+              uses: actions/setup-python@main
+              with:
+                  python-version: 3.9
 
-      - name: Install dependencies
-        run: |
-          python -m pip install -U pip poetry invoke
-          inv env.init-dev --no-pre-commit
+            - name: Install dependencies
+              run: |
+                  python -m pip install -U pip poetry invoke
+                  inv env.init-dev --no-pre-commit
 
-      - name: Style check
-        run: |
-          inv style
+            - name: Style check
+              run: |
+                  inv style
 
-      - name: Check vulnerability
-        run: |
-          inv secure
+            - name: Check vulnerability
+              run: |
+                  inv secure
 
-      - name: Run tests with coverage
-        run: |
-          inv test.cov
+            - name: Run tests with coverage
+              run: |
+                  inv test.cov
 
-      - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-            parallel: true
-            flag-name: Run tests with coverage
+            - name: Coveralls
+              uses: AndreMiras/coveralls-python-action@develop
+              with:
+                  parallel: true
+                  flag-name: Run tests with coverage
 
-  coveralls_finish:
-      needs: check
-      runs-on: ubuntu-latest
-      steps:
-          -   name: Coveralls Finished
+    coveralls_finish:
+        needs: check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Coveralls Finished
               uses: AndreMiras/coveralls-python-action@develop
               with:
                   parallel-finished: true
