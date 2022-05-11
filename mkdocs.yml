@@ -1,9 +1,87 @@
+---
 site_name: vhcalc
-nav:
-  - Home: README.md
-  - Contributing: contributing.md
-theme:
-  name: 'material'
+site_url: https://yoyonel.github.io/vhcalc/
+site_description: It's a client-side library that implements a custom algorithm for extracting fingerprints from any video source.
+
 repo_url: https://github.com/yoyonel/vhcalc
 remote_branch: gh-pages
 remote_name: origin
+
+theme:
+    name: material
+    language: en
+    palette:
+        - scheme: default
+          primary: teal
+          accent: teal
+          toggle:
+              name: Switch to light mode
+              icon: material/toggle-switch-off-outline
+        - scheme: slate
+          primary: indigo
+          accent: indigo
+          toggle:
+              icon: material/toggle-switch
+              name: Switch to dark mode
+    features:
+        - content.code.annotate
+        - content.tabs
+        - navigation.tabs.sticky
+        - navigation.indexes
+        - navigation.top
+        - navigation.tracking
+        - search.highlight
+        - search.share
+        - search.suggest
+    font:
+        text: Roboto
+        code: Roboto Mono
+  # https://icon-icons.com/download/90738/ICO/512/
+    favicon: img/favicon.ico
+    logo: img/favicon.ico
+    icon:
+        repo: fontawesome/brands/gitlab
+
+plugins:
+    - search
+    - git-revision-date-localized:
+          type: datetime
+          fallback_to_build_date: true
+    - minify:
+          minify_html: true
+    - mkdocs-video
+
+markdown_extensions:
+    - admonition
+    - attr_list
+    - md_in_html
+    - mkdocs-click
+    - pymdownx.arithmatex
+    - pymdownx.betterem:
+          smart_enable: all
+    - pymdownx.caret
+    - pymdownx.critic
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_generator: !%21python/name:pymdownx.emoji.to_svg
+    - pymdownx.inlinehilite
+    - pymdownx.magiclink
+    - pymdownx.mark
+    - pymdownx.tabbed:
+          alternate_style: true
+    - pymdownx.smartsymbols
+    - pymdownx.superfences
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - pymdownx.tilde
+    - codehilite
+    - footnotes
+    - toc:
+          permalink: true
+
+extra_css:
+    - assets/css/custom.css
+
+nav:
+    - Overview: README.md
+    - Contributing: contributing.md
