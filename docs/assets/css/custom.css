@@ -1,0 +1,27 @@
+/* center copyright text */
+p {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.md-copyright {
+    width: auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* center update time at the bottom */
+.md-source-file {
+    font-weight: bold;
+    text-align: center;
+}
+
+.md-header__title {
+    margin-left: 0.1rem;
+}
+
+/* remove annoying space between logo & text */
+:dir(ltr) .md-header__title {
+    margin-left: 0.1rem;
+}

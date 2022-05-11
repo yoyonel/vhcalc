@@ -10,10 +10,15 @@ from loguru import logger
 import vhcalc.services as services
 
 
-@click.command(
+@click.version_option(version=version("vhcalc"), prog_name="vhcalc")
+@click.group()
+def cli() -> None:
+    pass
+
+
+@cli.command(  # type: ignore
     short_help="extracting and exporting binary video hashes (fingerprints) from any video source"
 )
-@click.version_option(version=version(__package__ or __name__))
 @click.option(
     "--medias_pattern",
     "-r",
@@ -42,3 +47,7 @@ def export_imghash_from_media(
     \f"""
     for media in medias_pattern:
         services.export_imghash_from_media(media, output_file)
+
+
+if __name__ == "__main__":
+    cli()

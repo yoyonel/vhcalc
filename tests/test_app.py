@@ -1,7 +1,7 @@
 from importlib.metadata import version
 from pathlib import Path
 
-from vhcalc.app import export_imghash_from_media
+from vhcalc.app import cli, export_imghash_from_media
 from vhcalc.services.reader_frames import build_reader_frames
 
 
@@ -22,11 +22,11 @@ def test_cli_export_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
 
 def test_cli_version(cli_runner):
     result = cli_runner.invoke(
-        export_imghash_from_media,
+        cli,
         args="--version",
         catch_exceptions=False,
     )
     assert result.exit_code == 0
-    app_name_expected = "export-imghash-from-media"
+    app_name_expected = "vhcalc"
     version_expected = version("vhcalc")
     assert result.output == f"{app_name_expected}, version {version_expected}\n"
