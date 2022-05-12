@@ -1,4 +1,11 @@
 # Changelog
+## 0.2.3 (2022-05-12)
+
+### Fix
+
+- **pre-commit**: deactivate pre-commit (ymlparser) on mkdocs.yml
+- **click**: downgrade click version (mypy issue) + remove mkdocs-click extension (poetry graph resolution issue)
+
 ## 0.2.2 (2022-04-02)
 
 ### Fix
