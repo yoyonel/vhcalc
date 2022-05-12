@@ -16,7 +16,7 @@ def cli() -> None:
     pass
 
 
-@cli.command(  # type: ignore
+@cli.command(
     short_help="extracting and exporting binary video hashes (fingerprints) from any video source"
 )
 @click.option(
