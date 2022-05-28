@@ -1,4 +1,4 @@
-FROM python:3.9-slim-bullseye as builder
+FROM python:3.9-slim-buster as builder
 
 ARG USERNAME=yoyonel
 
@@ -22,7 +22,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     pip wheel -w wheels --no-deps -e .
 
 
-FROM python:3.9-slim-bullseye
+FROM python:3.9-slim-buster
 
 ARG USERNAME=yoyonel
 
