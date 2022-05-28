@@ -1,4 +1,10 @@
 # Changelog
+## 0.2.5 (2022-05-28)
+
+### Fix
+
+- Dockerfile to reduce vulnerabilities
+
 ## 0.2.4 (2022-05-28)
 
 ### Fix
