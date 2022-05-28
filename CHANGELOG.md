@@ -1,4 +1,10 @@
 # Changelog
+## 0.2.4 (2022-05-28)
+
+### Fix
+
+- requirements.txt to reduce vulnerabilities
+
 ## 0.2.3 (2022-05-12)
 
 ### Fix
