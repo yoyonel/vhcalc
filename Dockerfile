@@ -17,7 +17,9 @@ RUN echo '***VERSION python in builder image' && \
     python --version
 
 # hadolint ignore=DL3013
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+RUN rm -rf ~/.cache/pip && \
+    python -m pip cache purge && \
+    python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     pip wheel -w wheels --no-deps -e .
 
@@ -40,11 +42,13 @@ RUN echo '***VERSION python in final image' && \
 
 COPY --from=builder /home/$USERNAME/wheels /home/$USERNAME/wheels
 
+ENV PIP_NO_CACHE_DIR=1
 # hadolint ignore=DL3013
 RUN set -ex && \
     \
-    PIP_FIND_LINKS="/home/$USERNAME/wheels" pip install --no-cache-dir /home/$USERNAME/wheels/vhcalc* && \
+    python -m pip install --upgrade pip && \
+    PIP_FIND_LINKS="/home/$USERNAME/wheels" pip install /home/$USERNAME/wheels/vhcalc* && \
     rm -rf /home/$USERNAME/.cache
 
-ENTRYPOINT ["export_imghash_from_media"]
+ENTRYPOINT ["vhcalc"]
 CMD ["--version"]
