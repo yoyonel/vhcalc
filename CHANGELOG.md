@@ -1,4 +1,11 @@
 # Changelog
+## 0.2.6 (2022-05-29)
+
+### Fix
+
+- **docker**: Fix docker stage (build, entrypoint/command)
+- **docker**: Fix docker stage (build, entrypoint/command)
+
 ## 0.2.5 (2022-05-28)
 
 ### Fix
