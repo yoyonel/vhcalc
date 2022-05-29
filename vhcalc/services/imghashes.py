@@ -20,6 +20,14 @@ def export_imghash_from_media(
     chunk_nb_seconds: int = 15,
     console: Optional[Console] = None,
 ) -> Path:
+    """
+
+    :param input_media:
+    :param output_file:
+    :param chunk_nb_seconds:
+    :param console:
+    :return:
+    """
     console = console or get_console()
     # Read a video file
     it_reader_frame, media_metadata = build_reader_frames(input_media)

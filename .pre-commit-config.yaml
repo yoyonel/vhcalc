@@ -19,7 +19,7 @@ repos:
                 - DL3013
                 - DL3042
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v2.25.0
+      rev: v2.27.1
       hooks:
           - id: commitizen
             stages: [commit-msg]
