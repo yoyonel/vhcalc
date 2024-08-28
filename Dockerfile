@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as builder
+FROM python:3.13.0b4-slim as builder
 
 ARG USERNAME=yoyonel
 
@@ -24,7 +24,7 @@ RUN rm -rf ~/.cache/pip && \
     pip wheel -w wheels --no-deps -e .
 
 
-FROM python:3.9-slim-buster
+FROM python:3.13.0b4-slim
 
 ARG USERNAME=yoyonel
 
