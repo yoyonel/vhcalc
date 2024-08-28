@@ -29,7 +29,6 @@ def test_build_reader_frames(
     input_options: dict,
     fn_expected_results: Callable[[MetaData], int],
     big_buck_bunny_trailer,
-    tmpdir,
 ):
     p_video = big_buck_bunny_trailer
     gen_reader_frame, metadata_video = build_reader_frames(p_video, **input_options)

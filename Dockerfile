@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as builder
+FROM python:3.9-slim-buster AS builder
 
 ARG USERNAME=yoyonel
 
