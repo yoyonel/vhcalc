@@ -1,4 +1,14 @@
 # Changelog
+## 0.2.7 (2024-08-29)
+
+### Fix
+
+- **style.py**: fix task style commit check (using commitizen)
+
+### Refactor
+
+- refactoring on services, tools. add more utests, more comments. update some pre-commit hooks
+
 ## 0.2.6 (2022-05-29)
 
 ### Fix
