@@ -3,17 +3,22 @@ import pathlib
 from importlib.metadata import version
 from typing import Iterable, Optional
 
-import click
+import rich_click as click
 from click_path import GlobPaths
 from loguru import logger
 
 import vhcalc.services as services
+from vhcalc.tools.version_extended_informations import get_version_extended_informations
 
 
-@click.version_option(version=version("vhcalc"), prog_name="vhcalc")
+@click.version_option(
+    version=version("vhcalc"),
+    prog_name="vhcalc",
+    message=f"%(prog)s, version %(version)s\n{get_version_extended_informations()}",
+)
 @click.group()
 def cli() -> None:
-    pass
+    ...
 
 
 @cli.command(
@@ -42,9 +47,7 @@ def cli() -> None:
 def export_imghash_from_media(
     medias_pattern: Iterable[pathlib.Path], output_file: Optional[pathlib.Path]
 ) -> None:
-    """This script exporting binary images hashes (fingerprints)
-    from (any) media (video file)
-    \f"""
+    """Click entrypoint for extracting and exporting binary video hashes (fingerprints) from any video source"""
     for media in medias_pattern:
         services.export_imghash_from_media(media, output_file)
 

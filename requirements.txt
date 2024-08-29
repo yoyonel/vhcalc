@@ -167,6 +167,12 @@ pywavelets==1.4.1 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:da7b9c006171be1f9ddb12cc6e0d3d703b95f7f43cb5e2c6f5f15d3233fcf202 \
     --hash=sha256:daf0aa79842b571308d7c31a9c43bc99a30b6328e6aea3f50388cd8f69ba7dbc \
     --hash=sha256:de7cd61a88a982edfec01ea755b0740e94766e00a1ceceeafef3ed4c85c605cd
+rich-click==1.6.1 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:0fcf4d1a09029d79322dd814ab0b2e66ac183633037561881d45abae8a161d95 \
+    --hash=sha256:f8ff96693ec6e261d1544e9f7d9a5811c5ef5d74c8adb4978430fc0dac16777e
+rich==11.2.0 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:1a6266a5738115017bb64a66c59c717e7aa047b3ae49a011ede4abdeffc6536e \
+    --hash=sha256:d5f49ad91fb343efcae45a2b2df04a9755e863e50413623ab8c9e74f05aee52b
 rich[spinner]==11.2.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:1a6266a5738115017bb64a66c59c717e7aa047b3ae49a011ede4abdeffc6536e \
     --hash=sha256:d5f49ad91fb343efcae45a2b2df04a9755e863e50413623ab8c9e74f05aee52b
@@ -195,6 +201,12 @@ scipy==1.9.3 ; python_version >= "3.9" and python_version < "4.0" \
 typeguard==2.13.3 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4 \
     --hash=sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1
+types-docutils==0.19.1.3 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:36fe30de56f1ece1a9f7a990d47daa781b5af831d2b3f2dcb7dfd01b857cc3d4 \
+    --hash=sha256:d608e6b91ccf0e8e01c586a0af5b0e0462382d3be65b734af82d40c9d010735d
+types-setuptools==67.2.0.1 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:07648088bc2cbf0f2745107d394e619ba2a747f68a5904e6e4089c0cb8322065 \
+    --hash=sha256:f15b2924122dca5f99a9f6a96a872145721373fe1bb6d656cf269c2a8b73a74b
 win32-setctime==1.1.0 ; python_version >= "3.9" and python_version < "4.0" and sys_platform == "win32" \
     --hash=sha256:15cf5750465118d6929ae4de4eb46e8edae9a5634350c01ba582df868e932cb2 \
     --hash=sha256:231db239e959c2fe7eb1d7dc129f11172354f98361c4fa2d6d2d7e278baa8aad

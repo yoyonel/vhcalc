@@ -141,6 +141,8 @@ colorama = "0.4.4"
 click-path = "0.0.5"
 click = "8.0.4"
 Pillow = ">=9.1.1"
+rich-click = "^1.6.1"
+types-setuptools = "^67.2.0.1"
 
 [tool.poetry.dev-dependencies]
 # task management
