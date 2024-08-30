@@ -4,10 +4,10 @@ from importlib.metadata import version
 from typing import Iterable, Optional
 
 import rich_click as click
-from click_path import GlobPaths
 from loguru import logger
 
 import vhcalc.services as services
+from vhcalc.tools.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
 
 
@@ -18,7 +18,7 @@ from vhcalc.tools.version_extended_informations import get_version_extended_info
 )
 @click.group()
 def cli() -> None:
-    ...
+    pass
 
 
 @cli.command(
