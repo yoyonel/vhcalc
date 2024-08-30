@@ -1,4 +1,10 @@
 # Changelog
+## 0.2.8 (2024-08-30)
+
+### Fix
+
+- **click-path**: remove package click-path and transfert click_path.GlobPath implementation into our tool
+
 ## 0.2.7 (2024-08-29)
 
 ### Fix
