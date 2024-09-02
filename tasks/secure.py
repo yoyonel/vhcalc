@@ -1,6 +1,6 @@
 from invoke import task
 
-from tasks.common import VENV_PREFIX
+from tasks.common import USE_PTY, VENV_PREFIX
 
 
 @task
@@ -12,7 +12,7 @@ def check_package(ctx):
 @task
 def bandit(ctx):
     """Check common software vulnerabilities (Use it as reference only)"""
-    ctx.run(f"{VENV_PREFIX} bandit -r -iii -lll --ini .bandit", pty=True)
+    ctx.run(f"{VENV_PREFIX} bandit -r -iii -lll --ini .bandit", pty=USE_PTY)
 
 
 @task(pre=[check_package, bandit], default=True)

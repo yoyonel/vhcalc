@@ -1,12 +1,12 @@
 from invoke import task
 
-from tasks.common import VENV_PREFIX
+from tasks.common import USE_PTY, VENV_PREFIX
 
 
 @task
 def commit(ctx):
     """Commit through commitizen"""
-    ctx.run(f"{VENV_PREFIX} cz commit", pty=True)
+    ctx.run(f"{VENV_PREFIX} cz commit", pty=USE_PTY)
 
 
 @task

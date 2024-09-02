@@ -359,9 +359,9 @@ setuptools==74.0.0 ; python_version >= "3.9" and python_version < "4.0" \
 typeguard==4.3.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:4d24c5b39a117f8a895b9da7a9b3114f04eb63bade45a4492de49b175b6f7dfa \
     --hash=sha256:92ee6a0aec9135181eae6067ebd617fd9de8d75d714fb548728a4933b1dea651
-types-setuptools==74.0.0.20240830 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:2019cb0ef0fc11c3550946057e1fe78cb934284b856cec5f4ab45b43d9288685 \
-    --hash=sha256:3ccb05f218012b6d1643f15c3395fced6a290a32bc49338b0e93ece73585a5a2
+types-setuptools==74.0.0.20240831 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:4d9d18ea9214828d695a384633130009f5dee2681a157ee873d3680b62931590 \
+    --hash=sha256:8b4a544cc91d42a019dc1e41fd397608b4bc7e20c7d7d5bc326589ffd9e8f8a1
 typing-extensions==4.12.2 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8
