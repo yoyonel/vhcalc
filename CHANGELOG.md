@@ -1,4 +1,15 @@
 # Changelog
+## 0.2.9 (2024-09-02)
+
+### Fix
+
+- **github-actions**: fix on 'Set up Python' step
+- **style**: add .tox to exclude directory for style.flake8
+
+### Refactor
+
+- **invoke**: typo + deprecated call for poetry install (without dev dependancies)
+
 ## 0.2.8 (2024-08-30)
 
 ### Fix
