@@ -15,7 +15,7 @@ jobs:
         strategy:
             max-parallel: 12
             matrix:
-                platform: [ubuntu-latest]
+                platform: [ubuntu-latest, windows-latest]
                 python-version: [3.9, '3.10', '3.11', '3.12']
         steps:
             - name: Check out
@@ -32,6 +32,9 @@ jobs:
               run: |
                   python -m pip install -U pip poetry invoke
                   inv env.init-dev --no-pre-commit
+
+            - name: Setup FFmpeg
+              uses: AnimMouse/setup-ffmpeg@v1
 
             - name: Style check
               run: |
