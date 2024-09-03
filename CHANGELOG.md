@@ -1,4 +1,10 @@
 # Changelog
+## 0.3.0 (2024-09-03)
+
+### Feat
+
+- **app.py**: default CLI group to a simpler entrypoint for generating images hashes from media filename input
+
 ## 0.2.9 (2024-09-02)
 
 ### Fix
