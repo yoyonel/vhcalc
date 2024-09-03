@@ -92,3 +92,30 @@ def test_cli_version(cli_runner):
     app_name_expected = "vhcalc"
     version_expected = version("vhcalc")
     assert f"{app_name_expected}, version {version_expected}\n" in result.output
+
+
+def test_cli_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
+    p_video = big_buck_bunny_trailer
+    resource_video_name = p_video.stem
+
+    binary_img_hash_file = tmpdir.mkdir("phash") / f"{resource_video_name}.phash"
+
+    result = cli_runner.invoke(
+        cli,
+        args=f"{str(p_video)} {binary_img_hash_file}",
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    assert not result.output
+
+    _reader, metadata = build_reader_frames(p_video)
+    expected_size_binary_file = metadata.nb_frames * 8
+    assert Path(binary_img_hash_file).stat().st_size == expected_size_binary_file
+
+
+def test_cli_imghash_without_export_file(big_buck_bunny_trailer, cli_runner):
+    p_video = big_buck_bunny_trailer
+
+    result = cli_runner.invoke(cli, args=str(p_video), catch_exceptions=False)
+    assert result.exit_code == 0
+    # TODO: catch stdout with binary images hashes
