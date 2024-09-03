@@ -23,18 +23,16 @@ It's a client-side library that implements a custom algorithm for extracting vid
 ## Usage
 
 ```sh
-$ export_imghash_from_media --help  
-Usage: export_imghash_from_media [OPTIONS]
-
-  This script exporting binary images hashes (fingerprints) from (any) media
-  (video file)
+$ vhcalc --help
+Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --version                       Show the version and exit.
-  -r, --medias_pattern PATH-OR-GLOB
-                                  Pattern to find medias  [required]
-  -o, --output-file PATH          File where to write images hashes.
-  --help                          Show this message and exit.
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+imghash*                   extracting and exporting binary video hashes
+                           (fingerprints) from any video source
+export-imghash-from-media  extracting and exporting binary video hashes
+                           (fingerprints) from any video source
 ```
 
 
@@ -44,17 +42,15 @@ Docker hub: [yoyonel/vhcalc](https://hub.docker.com/r/yoyonel/vhcalc/)
 
 ```sh
 $ docker run -it yoyonel/vhcalc:main --help
-Usage: export_imghash_from_media [OPTIONS]
-
-  This script exporting binary images hashes (fingerprints) from (any) media
-  (video file)
+Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --version                       Show the version and exit.
-  -r, --medias_pattern PATH-OR-GLOB
-                                  Pattern to find medias  [required]
-  -o, --output-file PATH          File where to write images hashes.
-  --help                          Show this message and exit.
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+imghash*                   extracting and exporting binary video hashes
+                           (fingerprints) from any video source
+export-imghash-from-media  extracting and exporting binary video hashes
+                           (fingerprints) from any video source
 ```
 
 ## Contributing

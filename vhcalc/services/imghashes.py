@@ -2,7 +2,7 @@ from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import Optional
+from typing import Iterable, Optional
 
 from rich import get_console
 
@@ -12,6 +12,24 @@ from vhcalc.tools.imghash import imghash_to_bytes, rawframe_to_imghash
 from vhcalc.tools.progress_bar import configure_progress_bar
 
 console = get_console()
+
+
+def compute_imghash_from_media(
+    input_media: Path,
+    chunk_nb_seconds: int = 15,
+) -> Iterable[bytes]:
+    # Read a video file
+    it_reader_frame, media_metadata = build_reader_frames(input_media)
+    chunk_size = int(media_metadata.fps * chunk_nb_seconds)
+
+    # configure chunk
+    gen_imghashes = map(rawframe_to_imghash, it_reader_frame)
+    gen_chunk_imghashes = chunks(gen_imghashes, chunk_size)
+    # for each chunk of frames
+    for chunk_imghashes in gen_chunk_imghashes:
+        for frame_hash_binary in map(imghash_to_bytes, chunk_imghashes):
+            # and write (chunk of) images hashes result on export file
+            yield frame_hash_binary
 
 
 def export_imghash_from_media(
