@@ -51,4 +51,5 @@ RUN set -ex && \
     rm -rf /home/$USERNAME/.cache
 
 ENTRYPOINT ["vhcalc"]
-CMD ["--version"]
+# by default: expected stdin stream input and exporting result to stdout
+CMD ["-", "-"]

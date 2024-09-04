@@ -45,7 +45,8 @@ profile = "black"
 
 [tool.mypy]
 exclude = '''(?x)(
-    ^vhcalc/tools/click_path\.py$    # file named "vhcalc/tools/click_path.py"
+    ^vhcalc/tools/click_path\.py$               # file named "vhcalc/tools/click_path.py"
+    | ^vhcalc/tools/imageio_ffmpeg_io\.py$      # file named "vhcalc/tools/imageio_ffmpeg_io.py"
 )'''
 files = [
     "vhcalc",
@@ -117,7 +118,8 @@ norecursedirs = [
         '*/virtualenv/*',
         '*/virtualenvs/*',
         '*/tests/*',
-        '*/tools/click_default_group.py'
+        '*/tools/click_default_group.py',
+        '*/tools/imageio_ffmpeg_io.py'
     ]
     [tool.coverage.run]
     relative_files = true

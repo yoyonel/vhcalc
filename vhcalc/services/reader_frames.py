@@ -1,10 +1,11 @@
 import datetime
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterator, Tuple
+from typing import Any, BinaryIO, Iterator, Tuple
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
+from vhcalc.tools.imageio_ffmpeg_io import read_frames_from_binary_stream
 from vhcalc.tools.imghash import FRAME_SIZE
 
 
@@ -65,6 +66,46 @@ def build_reader_frames(
         fps=meta["fps"],
         duration=meta["duration"],
         nb_frames=count_frames_and_secs(media)[0],
+    )
+
+    return reader, metadata
+
+
+def build_reader_frames_from_binary_stream(
+    bin_io_stream: BinaryIO,
+    ffmpeg_reduce_verbosity: bool = True,
+) -> Tuple[Iterator[bytes], MetaData]:
+    ffmpeg_seek_input_cmd: list[str] = []
+    ffmpeg_seek_output_cmd: list[str] = []
+
+    # extract a (frame's) chunk around/in middle of the media
+    # https://trac.ffmpeg.org/wiki/Seeking#Cuttingsmallsections
+    if ffmpeg_reduce_verbosity:
+        ffmpeg_seek_input_cmd += "-hide_banner -nostats -nostdin".split(" ")
+
+    # rescale output frame to 32x32
+    video_filters = f"scale=width={FRAME_SIZE}:height={FRAME_SIZE}"
+
+    reader = read_frames_from_binary_stream(
+        bin_io_stream,
+        input_params=[*ffmpeg_seek_input_cmd],
+        output_params=[
+            *ffmpeg_seek_output_cmd,
+            *("-vf", video_filters),
+            *("-pix_fmt", "gray"),
+        ],
+        bits_per_pixel=8,
+    )
+    # yield metadata
+    meta = next(reader)
+
+    # build metadata dataclass
+    metadata = MetaData(
+        fps=meta["fps"],
+        duration=meta["duration"],
+        # TODO: find a way to retrieve this information
+        # nb_frames=count_frames_and_secs(media)[0],
+        nb_frames=int(meta["fps"] * meta["duration"]),
     )
 
     return reader, metadata
