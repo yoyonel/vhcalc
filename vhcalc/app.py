@@ -8,8 +8,8 @@ import rich_click as click
 from loguru import logger
 
 import vhcalc.services as services
-from vhcalc.tools.click_default_group import DefaultGroup
-from vhcalc.tools.click_path import GlobPaths
+from vhcalc.tools.forked.click_default_group import DefaultGroup
+from vhcalc.tools.forked.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
 
 

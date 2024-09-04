@@ -5,7 +5,7 @@ from typing import Any, BinaryIO, Iterator, Tuple
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
-from vhcalc.tools.imageio_ffmpeg_io import read_frames_from_binary_stream
+from vhcalc.tools.forked.imageio_ffmpeg_io import read_frames_from_binary_stream
 from vhcalc.tools.imghash import FRAME_SIZE
 
 
