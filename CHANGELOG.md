@@ -1,4 +1,15 @@
 # Changelog
+## 0.4.0 (2024-09-04)
+
+### Feat
+
+- **application**: allow to use stdin for providing binary data (media/video)
+
+### Refactor
+
+- **services**: regroup API for generating images hashes from Path|str media filename or directly from buffered reader (like return from open())
+- **tools**: move all forked tools (click-path, click-default-group and imageio-ffmpeg:io) to a 'tools/forked' dedicated directory
+
 ## 0.3.0 (2024-09-03)
 
 ### Feat
