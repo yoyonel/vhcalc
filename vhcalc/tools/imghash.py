@@ -1,5 +1,5 @@
 import binascii
-from typing import Final
+from typing import Callable, Final
 
 import imagehash
 import numpy as np
@@ -30,6 +30,7 @@ def rawframe_to_imghash(
     raw_frame: bytes,
     frame_width: int = FRAME_SIZE,
     frame_height: int = FRAME_SIZE,
+    fn_imagehash: Callable[[Image.Image], ImageHash] = imagehash.phash,
 ) -> imagehash.ImageHash:
     """Apply a Perceptual Hash computation on raw image frame.
 
@@ -43,7 +44,7 @@ def rawframe_to_imghash(
            [False, False, False, False, False, False, False, False],
            [False, False, False, False, False, False, False, False]])
     """
-    return imagehash.phash(
+    return fn_imagehash(
         Image.fromarray(
             # https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.frombuffer.html
             np.frombuffer(

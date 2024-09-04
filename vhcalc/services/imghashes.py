@@ -1,10 +1,14 @@
+from functools import partial
 from io import BufferedReader
 from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import Iterable, Optional
+from typing import Callable, Iterable, Optional
 
+import imagehash
+from imagehash import ImageHash
+from PIL.Image import Image
 from rich import get_console
 
 from vhcalc.services.reader_frames import build_reader_frames
@@ -18,13 +22,26 @@ console = get_console()
 def compute_imghash_from_media_from_binary_stream(
     bin_io_stream: BufferedReader,
     chunk_nb_seconds: int = 15,
+    fn_imagehash: Callable[[Image], ImageHash] = imagehash.phash,
 ) -> Iterable[bytes]:
+    """
+
+    Args:
+        bin_io_stream (BufferedReader):
+        chunk_nb_seconds (int):
+        fn_imagehash (Callable):
+
+    Returns:
+
+    """
     # Read a video file
     it_reader_frame, media_metadata = build_reader_frames(bin_io_stream)
     chunk_size = int(media_metadata.fps * chunk_nb_seconds)
 
     # configure chunk
-    gen_imghashes = map(rawframe_to_imghash, it_reader_frame)
+    gen_imghashes = map(
+        partial(rawframe_to_imghash, fn_imagehash=fn_imagehash), it_reader_frame
+    )
     gen_chunk_imghashes = chunks(gen_imghashes, chunk_size)
     # for each chunk of frames
     for chunk_imghashes in gen_chunk_imghashes:
