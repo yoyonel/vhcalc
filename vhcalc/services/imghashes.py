@@ -1,15 +1,13 @@
+from io import BufferedReader
 from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import BinaryIO, Iterable, Optional
+from typing import Iterable, Optional
 
 from rich import get_console
 
-from vhcalc.services.reader_frames import (
-    build_reader_frames,
-    build_reader_frames_from_binary_stream,
-)
+from vhcalc.services.reader_frames import build_reader_frames
 from vhcalc.tools.chunk import chunks
 from vhcalc.tools.imghash import imghash_to_bytes, rawframe_to_imghash
 from vhcalc.tools.progress_bar import configure_progress_bar
@@ -18,13 +16,11 @@ console = get_console()
 
 
 def compute_imghash_from_media_from_binary_stream(
-    bin_io_stream: BinaryIO,
+    bin_io_stream: BufferedReader,
     chunk_nb_seconds: int = 15,
 ) -> Iterable[bytes]:
     # Read a video file
-    it_reader_frame, media_metadata = build_reader_frames_from_binary_stream(
-        bin_io_stream
-    )
+    it_reader_frame, media_metadata = build_reader_frames(bin_io_stream)
     chunk_size = int(media_metadata.fps * chunk_nb_seconds)
 
     # configure chunk

@@ -2,7 +2,8 @@
 import pathlib
 import sys
 from importlib.metadata import version
-from typing import BinaryIO, Iterable, Optional
+from io import BufferedReader, BufferedWriter
+from typing import Iterable, Optional
 
 import rich_click as click
 from loguru import logger
@@ -33,7 +34,7 @@ def cli() -> None:
 )
 @click.argument("input_stream", type=click.File("rb"), default=sys.stdin.buffer)
 @click.argument("output_stream", type=click.File("wb"), default=sys.stdout.buffer)
-def imghash(input_stream: BinaryIO, output_stream: BinaryIO) -> None:
+def imghash(input_stream: BufferedReader, output_stream: BufferedWriter) -> None:
     """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
     for frame_hash_binary in services.compute_imghash_from_media_from_binary_stream(
         input_stream
