@@ -36,3 +36,15 @@ def test_build_reader_frames(
     nb_frames_read = len(list(gen_reader_frame))
     nb_frames_expected = fn_expected_results(metadata_video)
     assert nb_frames_read == nb_frames_expected
+
+
+def test_build_reader_frames_with_binary_stream_input(
+    big_buck_bunny_trailer,
+):
+    p_video = big_buck_bunny_trailer
+    gen_reader_frame, metadata_video = build_reader_frames(p_video.open("rb"))
+    # consume reader frames
+    nb_frames_read = len(list(gen_reader_frame))
+    nb_frames_expected = metadata_video.nb_frames
+    # FIXME
+    assert 0 < nb_frames_read <= nb_frames_expected

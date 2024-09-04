@@ -29,8 +29,8 @@ Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 Options:
   --version  Show the version and exit.
   --help     Show this message and exit.
-imghash*                   extracting and exporting binary video hashes
-                           (fingerprints) from any video source
+imghash*                   Compute image hashes from and to binaries stream
+                           (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
 ```
@@ -41,16 +41,22 @@ export-imghash-from-media  extracting and exporting binary video hashes
 Docker hub: [yoyonel/vhcalc](https://hub.docker.com/r/yoyonel/vhcalc/)
 
 ```sh
-$ docker run -it yoyonel/vhcalc:main --help
+$ docker run -it yoyonel/vhcalc:latest --help
 Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --version  Show the version and exit.
   --help     Show this message and exit.
-imghash*                   extracting and exporting binary video hashes
-                           (fingerprints) from any video source
+imghash*                   Compute image hashes from and to binaries stream
+                           (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
+```
+
+```shell
+$ cat tests/data/big_buck_bunny_trailer_480p.mkv | docker run -i --rm yoyonel/vhcalc:latest | md5sum
+The frame size for reading (32, 32) is different from the source frame size (854, 480).
+bf5c7468df01d78862c847596de92ff3  -
 ```
 
 ## Contributing

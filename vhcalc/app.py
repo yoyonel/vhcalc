@@ -2,14 +2,15 @@
 import pathlib
 import sys
 from importlib.metadata import version
-from typing import BinaryIO, Iterable, Optional
+from io import BufferedReader, BufferedWriter
+from typing import Iterable, Optional
 
 import rich_click as click
 from loguru import logger
 
 import vhcalc.services as services
-from vhcalc.tools.click_default_group import DefaultGroup
-from vhcalc.tools.click_path import GlobPaths
+from vhcalc.tools.forked.click_default_group import DefaultGroup
+from vhcalc.tools.forked.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
 
 
@@ -29,14 +30,14 @@ def cli() -> None:
 
 
 @cli.command(
-    short_help="extracting and exporting binary video hashes (fingerprints) from any video source"
+    short_help="Compute image hashes from and to binaries stream (by default: stdin/out)"
 )
-@click.argument("media_filename", type=click.Path(exists=True))
+@click.argument("input_stream", type=click.File("rb"), default=sys.stdin.buffer)
 @click.argument("output_stream", type=click.File("wb"), default=sys.stdout.buffer)
-def imghash(media_filename: str, output_stream: BinaryIO) -> None:
+def imghash(input_stream: BufferedReader, output_stream: BufferedWriter) -> None:
     """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
-    for frame_hash_binary in services.compute_imghash_from_media(
-        pathlib.Path(media_filename)
+    for frame_hash_binary in services.compute_imghash_from_media_from_binary_stream(
+        input_stream
     ):
         output_stream.write(frame_hash_binary)
 

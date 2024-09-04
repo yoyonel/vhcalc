@@ -45,7 +45,7 @@ profile = "black"
 
 [tool.mypy]
 exclude = '''(?x)(
-    ^vhcalc/tools/click_path\.py$    # file named "vhcalc/tools/click_path.py"
+    ^vhcalc/tools/forked               # all files named in "vhcalc/tools/forked/" directory
 )'''
 files = [
     "vhcalc",
@@ -117,7 +117,7 @@ norecursedirs = [
         '*/virtualenv/*',
         '*/virtualenvs/*',
         '*/tests/*',
-        '*/tools/click_default_group.py'
+        '*/tools/forked/*'
     ]
     [tool.coverage.run]
     relative_files = true
