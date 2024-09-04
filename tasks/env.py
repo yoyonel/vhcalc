@@ -46,4 +46,4 @@ def from_scratch(ctx):
     ctx.run("inv secure")
     ctx.run("inv doc.build")
     ctx.run("inv build.docker")
-    ctx.run("cat ~/Vidéos/__PERSO__/Facebook.mp4 | vhcalc | md5sum")
+    ctx.run("cat tests/data/big_buck_bunny_trailer_480p.mkv | vhcalc | md5sum")
