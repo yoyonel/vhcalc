@@ -33,3 +33,17 @@ def init_dev(ctx, no_pre_commit=False):
     ctx.run("poetry install")
     if not no_pre_commit:
         setup_pre_commit_hook(ctx)
+
+
+@task
+def from_scratch(ctx):
+    """build from scratch"""
+    clean(ctx)
+    ctx.run("poetry lock")
+    init_dev(ctx)
+    ctx.run("inv test.cov")
+    ctx.run("inv style")
+    ctx.run("inv secure")
+    ctx.run("inv doc.build")
+    ctx.run("inv build.docker")
+    ctx.run("cat ~/Vidéos/__PERSO__/Facebook.mp4 | vhcalc | md5sum")
