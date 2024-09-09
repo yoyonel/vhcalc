@@ -7,6 +7,8 @@ from tasks.common import VENV_PREFIX
 def clean(ctx):
     """Remove virtual environement"""
     ctx.run("poetry env remove 3.9", warn=True)
+    # ["No source for code" message in Coverage.py](https://stackoverflow.com/a/3123157)
+    ctx.run("rm -rf .coverage")
 
 
 @task
