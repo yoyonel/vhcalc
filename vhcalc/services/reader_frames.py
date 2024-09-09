@@ -1,24 +1,17 @@
 import datetime
-from dataclasses import dataclass
 from io import BufferedReader
 from pathlib import Path
-from typing import Any, Iterator, Tuple, Union
+from typing import Any, BinaryIO, Iterator, Tuple, Union
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
+from vhcalc.models import MetaData
 from vhcalc.tools.forked.imageio_ffmpeg_io import read_frames_from_binary_stream
 from vhcalc.tools.imghash import FRAME_SIZE
 
 
-@dataclass
-class MetaData:
-    fps: float
-    duration: float
-    nb_frames: int
-
-
 def build_reader_frames(
-    media_input: Union[Path, BufferedReader],
+    media_input: Union[Path, Union[BufferedReader, BinaryIO]],
     nb_seconds_to_extract: float = 0,
     seek_to_middle: bool = False,
     ffmpeg_reduce_verbosity: bool = True,

@@ -4,13 +4,11 @@ from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import Callable, Iterable, Optional
+from typing import Iterable, Optional
 
-import imagehash
-from imagehash import ImageHash
-from PIL.Image import Image
 from rich import get_console
 
+from vhcalc.models.imghash_function import ImageHashingFunction
 from vhcalc.services.reader_frames import build_reader_frames
 from vhcalc.tools.chunk import chunks
 from vhcalc.tools.imghash import imghash_to_bytes, rawframe_to_imghash
@@ -20,22 +18,28 @@ console = get_console()
 
 
 def compute_imghash_from_media_from_binary_stream(
-    bin_io_stream: BufferedReader,
+    binary_stream: BufferedReader,
     chunk_nb_seconds: int = 15,
-    fn_imagehash: Callable[[Image], ImageHash] = imagehash.phash,
+    fn_imagehash: ImageHashingFunction = ImageHashingFunction.PerceptualHashing,
 ) -> Iterable[bytes]:
     """
+    Compute images hashes from media input stream (readable with ffmpeg)
 
     Args:
-        bin_io_stream (BufferedReader):
-        chunk_nb_seconds (int):
-        fn_imagehash (Callable):
+        binary_stream (BufferedReader): binary stream to read from media input
+        chunk_nb_seconds (int): Chunk size in seconds used for generating images hashes from media decompression.
+        fn_imagehash (ImageHashingFunction): ImageHash function for transforming PIL.Image to ImageHash
 
-    Returns:
+    Yields:
+        Iterable[bytes]: The next binary image hash from media input stream
 
+    Example:
+        >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
+        >>> next(compute_imghash_from_media_from_binary_stream(media_path.open("rb")))
+        b'\xd5\xd5*\xd5*\xd4*\xd4'
     """
     # Read a video file
-    it_reader_frame, media_metadata = build_reader_frames(bin_io_stream)
+    it_reader_frame, media_metadata = build_reader_frames(binary_stream)
     chunk_size = int(media_metadata.fps * chunk_nb_seconds)
 
     # configure chunk
@@ -57,13 +61,17 @@ def export_imghash_from_media(
     unlink_export_file: bool = True,
 ) -> Path:
     """
+    Export images hashes from media (readable with ffmpeg)
 
-    :param input_media:
-    :param output_file:
-    :param chunk_nb_seconds:
-    :param unlink_export_file:
+    Args:
+        input_media (Path): Path object targeting the input media.
+        output_file (Optional[Path]): Path object for the output file. If not given, a temporary file is created.
+        chunk_nb_seconds (int): Chunk size in seconds used for generating images hashes from media decompression.
+        unlink_export_file (bool): Option for apply Path.unlink() on output file.
 
-    :return:
+    Returns:
+        pathlib.Path: Path for the output file that contain binary images hashes.
+
     """
     # Read a video file
     it_reader_frame, media_metadata = build_reader_frames(input_media)
