@@ -15,4 +15,11 @@ def run(ctx, allow_no_tests=False):
 @task
 def cov(ctx):
     """Run test coverage check"""
-    ctx.run(f"{VENV_PREFIX} pytest --cov=vhcalc --cov-append tests/", pty=USE_PTY)
+    # some doctests are present in vhcalc directory
+    ctx.run(f"{VENV_PREFIX} pytest --cov=vhcalc --cov-append vhcalc/ tests/", pty=USE_PTY)
+
+
+@task
+def tox(ctx):
+    """Run tox"""
+    ctx.run(f"{VENV_PREFIX} tox", pty=USE_PTY, warn=True)

@@ -106,17 +106,23 @@ def read_frames_from_binary_stream(
         chunk_size = 8192
         logger.info(f"starting to write to input stream ({chunk_size=} octets)")
         # [Read file in chunks - RAM-usage, reading strings from binary files](https://stackoverflow.com/a/63563264)
-        while chunk := _bin_io_stream.read(chunk_size):
-            _process.stdin.write(chunk)
-            _process.stdin.flush()
-        _process.stdin.close()
+        try:
+            while chunk := _bin_io_stream.read(chunk_size):
+                _process.stdin.write(chunk)
+                _process.stdin.flush()
+        # to prevent error occurred in doctest (at the end)
+        except BrokenPipeError:
+            pass
+        finally:
+            _process.stdin.close()
+            pass
 
-    thread_input = threading.Thread(
+    thread_write_to_input_stream = threading.Thread(
         target=write_to_input_stream, args=(process, bin_io_stream)
     )
     # Start a thread for injecting binary data to input
-    thread_input.daemon = True
-    thread_input.start()
+    thread_write_to_input_stream.daemon = True
+    thread_write_to_input_stream.start()
 
     log_catcher = LogCatcher(process.stderr)
 
@@ -195,7 +201,7 @@ def read_frames_from_binary_stream(
     finally:
         # waiting the end of the (Producer) thread
         try:
-            thread_input.join(timeout=1)
+            thread_write_to_input_stream.join(timeout=1)
         except TimeoutError:
             logger.warning(
                 "Consumer (FFMPEG stdout) stop before Producer (FFMPEG stdin)."
@@ -220,7 +226,7 @@ def read_frames_from_binary_stream(
                 # Windows # and "Broken Pipe" on Unix.
                 # p.stdin.write(b"q")  # commented out in v0.4.1
                 process.stdout.close()
-                process.stdin.close()
+                # process.stdin.close() -> not here, the thread writing into input stream closes it
                 # p.stderr.close() -> not here, the log_catcher closes it
             except Exception as err:  # pragma: no cover
                 logger.warning("Error while attempting stop ffmpeg (r): " + str(err))

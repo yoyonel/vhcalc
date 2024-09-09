@@ -9,6 +9,7 @@ import rich_click as click
 from loguru import logger
 
 import vhcalc.services as services
+from vhcalc.models.imghash_function import ImageHashingFunction
 from vhcalc.tools.forked.click_default_group import DefaultGroup
 from vhcalc.tools.forked.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
@@ -34,10 +35,23 @@ def cli() -> None:
 )
 @click.argument("input_stream", type=click.File("rb"), default=sys.stdin.buffer)
 @click.argument("output_stream", type=click.File("wb"), default=sys.stdout.buffer)
-def imghash(input_stream: BufferedReader, output_stream: BufferedWriter) -> None:
+@click.option(
+    "--image-hashing-method",
+    type=click.Choice(ImageHashingFunction.names()),
+    default="PerceptualHashing",
+    # TODO: post validation and transform this option string to callable image hashing function
+    # see: [Python Enum support for click.Choice #605](https://github.com/pallets/click/issues/605#issuecomment-901099036)
+)
+def imghash(
+    input_stream: BufferedReader,
+    output_stream: BufferedWriter,
+    image_hashing_method: str,
+) -> None:
     """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
+
     for frame_hash_binary in services.compute_imghash_from_media_from_binary_stream(
-        input_stream
+        input_stream,
+        fn_imagehash=ImageHashingFunction[image_hashing_method],
     ):
         output_stream.write(frame_hash_binary)
 

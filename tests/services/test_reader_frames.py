@@ -3,7 +3,8 @@ from typing import Callable
 
 import pytest
 
-from vhcalc.services.reader_frames import MetaData, build_reader_frames
+from vhcalc.models.metadata import MetaData
+from vhcalc.services.reader_frames import build_reader_frames
 
 
 @pytest.mark.parametrize(
