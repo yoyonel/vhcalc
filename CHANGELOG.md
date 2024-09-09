@@ -1,4 +1,11 @@
 # Changelog
+## 0.5.0 (2024-09-09)
+
+### Feat
+
+- **vhcalc**: add in CLI command an option to specify which image hashing function we want to use
+- **imghash**: parametrize image hash function usage
+
 ## 0.4.0 (2024-09-04)
 
 ### Feat
