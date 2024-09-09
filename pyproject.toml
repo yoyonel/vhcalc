@@ -46,6 +46,7 @@ profile = "black"
 [tool.mypy]
 exclude = '''(?x)(
     ^vhcalc/tools/forked               # all files named in "vhcalc/tools/forked/" directory
+    | ^vhcalc/tools/version_extended_informations\.py$  # ignore[attr-defined] raise only in 3.9
 )'''
 files = [
     "vhcalc",
