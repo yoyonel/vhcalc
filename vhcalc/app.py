@@ -39,17 +39,31 @@ def cli() -> None:
     "--image-hashing-method",
     type=click.Choice(ImageHashingFunction.names()),
     default="PerceptualHashing",
+    show_default=True,
     # TODO: post validation and transform this option string to callable image hashing function
     # see: [Python Enum support for click.Choice #605](https://github.com/pallets/click/issues/605#issuecomment-901099036)
+)
+@click.option(
+    "--decompress",
+    # https://click.palletsprojects.com/en/8.1.x/options/#boolean-flags
+    is_flag=True,
+    type=bool,
+    default=False,
+    help="",
 )
 def imghash(
     input_stream: BufferedReader,
     output_stream: BufferedWriter,
     image_hashing_method: str,
+    decompress: bool,
 ) -> None:
     """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
+    if decompress:
+        for imghash_binary in services.a2b_imghash(input_stream):
+            output_stream.write(str(imghash_binary).encode())
+        return
 
-    for frame_hash_binary in services.compute_imghash_from_media_from_binary_stream(
+    for frame_hash_binary in services.b2a_frames_to_imghash(
         input_stream,
         fn_imagehash=ImageHashingFunction[image_hashing_method],
     ):

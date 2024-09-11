@@ -324,9 +324,9 @@ pywavelets==1.6.0 ; python_version >= "3.9" and python_version < "4.0" \
 rich-click==1.8.3 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:636d9c040d31c5eee242201b5bf4f2d358bfae4db14bb22ec1cafa717cfd02cd \
     --hash=sha256:6d75bdfa7aa9ed2c467789a0688bc6da23fbe3a143e19aa6ad3f8bac113d2ab3
-rich==13.8.0 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:2e85306a063b9492dffc86278197a60cbece75bcb766022f3436f567cae11bdc \
-    --hash=sha256:a5ac1f1cd448ade0d59cc3356f7db7a7ccda2c8cbae9c7a90c28ff463d3e91f4
+rich==13.8.1 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:1760a3c0848469b97b558fc61c85233e3dafb69c7a071b4d60c38099d3cd4c06 \
+    --hash=sha256:8260cda28e3db6bf04d2d1ef4dbc03ba80a824c88b0e7668a0f23126a424844a
 scipy==1.13.1 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:017367484ce5498445aade74b1d5ab377acdc65e27095155e448c88497755a5d \
     --hash=sha256:095a87a0312b08dfd6a6155cbbd310a8c51800fc931b8c0b84003014b874ed3c \
@@ -353,15 +353,15 @@ scipy==1.13.1 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:e89369d27f9e7b0884ae559a3a956e77c02114cc60a6058b4e5011572eea9299 \
     --hash=sha256:eccfa1906eacc02de42d70ef4aecea45415f5be17e72b61bafcfd329bdc52e94 \
     --hash=sha256:f26264b282b9da0952a024ae34710c2aff7d27480ee91a2e82b7b7073c24722f
-setuptools==74.1.1 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:2353af060c06388be1cecbf5953dcdb1f38362f87a2356c480b6b4d5fcfc8847 \
-    --hash=sha256:fc91b5f89e392ef5b77fe143b17e32f65d3024744fba66dc3afe07201684d766
+setuptools==74.1.2 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:5f4c08aa4d3ebcb57a50c33b1b07e94315d7fc7230f7115e47fc99776c8ce308 \
+    --hash=sha256:95b40ed940a1c67eb70fc099094bd6e99c6ee7c23aa2306f4d2697ba7916f9c6
 typeguard==4.3.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:4d24c5b39a117f8a895b9da7a9b3114f04eb63bade45a4492de49b175b6f7dfa \
     --hash=sha256:92ee6a0aec9135181eae6067ebd617fd9de8d75d714fb548728a4933b1dea651
-types-setuptools==74.0.0.20240831 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:4d9d18ea9214828d695a384633130009f5dee2681a157ee873d3680b62931590 \
-    --hash=sha256:8b4a544cc91d42a019dc1e41fd397608b4bc7e20c7d7d5bc326589ffd9e8f8a1
+types-setuptools==74.1.0.20240907 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:0abdb082552ca966c1e5fc244e4853adc62971f6cd724fb1d8a3713b580e5a65 \
+    --hash=sha256:15b38c8e63ca34f42f6063ff4b1dd662ea20086166d5ad6a102e670a52574120
 typing-extensions==4.12.2 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8

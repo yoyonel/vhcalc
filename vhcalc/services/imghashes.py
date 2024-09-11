@@ -1,29 +1,30 @@
 from functools import partial
-from io import BufferedReader
+from io import BufferedReader, BytesIO
 from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
 from typing import Iterable, Optional
 
+from imagehash import ImageHash
 from rich import get_console
 
 from vhcalc.models.imghash_function import ImageHashingFunction
 from vhcalc.services.reader_frames import build_reader_frames
 from vhcalc.tools.chunk import chunks
-from vhcalc.tools.imghash import imghash_to_bytes, rawframe_to_imghash
+from vhcalc.tools.imghash import bytes_to_imghash, imghash_to_bytes, rawframe_to_imghash
 from vhcalc.tools.progress_bar import configure_progress_bar
 
 console = get_console()
 
 
-def compute_imghash_from_media_from_binary_stream(
+def b2a_frames_to_imghash(
     binary_stream: BufferedReader,
     chunk_nb_seconds: int = 15,
     fn_imagehash: ImageHashingFunction = ImageHashingFunction.PerceptualHashing,
 ) -> Iterable[bytes]:
     """
-    Compute images hashes from media input stream (readable with ffmpeg)
+    Compute images hashes from binary stream input frames (from ffmpeg readings)
 
     Args:
         binary_stream (BufferedReader): binary stream to read from media input
@@ -35,7 +36,7 @@ def compute_imghash_from_media_from_binary_stream(
 
     Example:
         >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
-        >>> next(compute_imghash_from_media_from_binary_stream(media_path.open("rb")))
+        >>> next(b2a_frames_to_imghash(media_path.open("rb")))
         b'\xd5\xd5*\xd5*\xd4*\xd4'
     """
     # Read a video file
@@ -49,9 +50,34 @@ def compute_imghash_from_media_from_binary_stream(
     gen_chunk_imghashes = chunks(gen_imghashes, chunk_size)
     # for each chunk of frames
     for chunk_imghashes in gen_chunk_imghashes:
-        for frame_hash_binary in map(imghash_to_bytes, chunk_imghashes):
+        for bin_imghash in map(imghash_to_bytes, chunk_imghashes):
             # and write (chunk of) images hashes result on export file
-            yield frame_hash_binary
+            yield bin_imghash
+
+
+def a2b_imghash(
+    binary_stream: BufferedReader,
+    chunk_size: int = 8 * 1024,
+) -> Iterable[ImageHash]:
+    """
+
+    Args:
+        binary_stream (BufferedReader): expected binary stream to read compatible with images hashes binary format.
+        chunk_size: size (in bits) used for chunk reading from input stream
+
+    Returns:
+
+    Examples:
+        >>> bin_imghashes = b'\\xd5\\xd5*\\xd5*\\xd4*\\xd4' * 8
+        >>> bin_stream = BytesIO(bin_imghashes)
+        >>> imghash_reconstructed = next(a2b_imghash(bin_stream))
+        >>> str(imghash_reconstructed)
+        'd5d52ad52ad42ad4'
+    """
+    while chunk_bin_imghash := binary_stream.read(chunk_size):
+        stream_bin_imghash = BytesIO(chunk_bin_imghash)
+        while bin_imghash := stream_bin_imghash.read(8):
+            yield bytes_to_imghash(bin_imghash)
 
 
 def export_imghash_from_media(
