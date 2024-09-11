@@ -1,9 +1,7 @@
-from .imghashes import (
-    compute_imghash_from_media_from_binary_stream,
-    export_imghash_from_media,
-)
+from .imghashes import a2b_imghash, b2a_frames_to_imghash, export_imghash_from_media
 
 __all__ = [
     "export_imghash_from_media",
-    "compute_imghash_from_media_from_binary_stream",
+    "b2a_frames_to_imghash",
+    "a2b_imghash",
 ]

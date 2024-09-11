@@ -15,6 +15,7 @@ def read_frames_from_binary_stream(
     input_params=None,
     output_params=None,
     bits_per_pixel=None,
+    chunk_size_for_input_stream_reading: int = 8_192,
 ):
     """
     Create a generator to iterate over the frames in a video file.
@@ -57,6 +58,7 @@ def read_frames_from_binary_stream(
         bpp (int): DEPRECATED, USE bits_per_pixel INSTEAD. The number of bytes per pixel in the output frames.
             This depends on the given pix_fmt. Some pixel formats like yuv420p have 12 bits per pixel
             and cannot be set in bytes as integer. For this reason the bpp argument is deprecated.
+        chunk_size_for_input_stream_reading (int): size (in bits) used for chunk reading from input stream
     """
 
     # ----- Input args
@@ -103,11 +105,12 @@ def read_frames_from_binary_stream(
     # [cpython/Lib/subprocess.py: def communicate(...)](https://github.com/python/cpython/blob/main/Lib/subprocess.py#L1174)
     # [Send input from one threaded subprocess to another](https://stackoverflow.com/questions/41287291/send-input-from-one-threaded-subprocess-to-another)
     def write_to_input_stream(_process, _bin_io_stream: BinaryIO):
-        chunk_size = 8192
-        logger.info(f"starting to write to input stream ({chunk_size=} octets)")
+        logger.info(
+            f"starting to write to input stream ({chunk_size_for_input_stream_reading=} octets)"
+        )
         # [Read file in chunks - RAM-usage, reading strings from binary files](https://stackoverflow.com/a/63563264)
         try:
-            while chunk := _bin_io_stream.read(chunk_size):
+            while chunk := _bin_io_stream.read(chunk_size_for_input_stream_reading):
                 _process.stdin.write(chunk)
                 _process.stdin.flush()
         # to prevent error occurred in doctest (at the end)

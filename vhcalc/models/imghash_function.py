@@ -10,10 +10,10 @@ class ImageHashingFunction(DocEnum):
     ... "Wavelet Hash computation."})
     >>>
     >>> from pathlib import Path
-    >>> from vhcalc.services.imghashes import compute_imghash_from_media_from_binary_stream
+    >>> from vhcalc.services.imghashes import b2a_frames_to_imghash
     >>>
     >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
-    >>> it_imghash = compute_imghash_from_media_from_binary_stream(media_path.open("rb"),
+    >>> it_imghash = b2a_frames_to_imghash(media_path.open("rb"),
     ... fn_imagehash=ImageHashingFunction.AverageHashing)
     >>> print(next(it_imghash))
     b'\xfe\xfe\xfe\xfe\xfe\xfe\xfe\xfe'

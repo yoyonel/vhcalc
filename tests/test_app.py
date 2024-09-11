@@ -112,6 +112,13 @@ def test_cli_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
     expected_size_binary_file = metadata.nb_frames * 8
     assert Path(binary_img_hash_file).stat().st_size == expected_size_binary_file
 
+    result = cli_runner.invoke(
+        cli,
+        args=f"--decompress {binary_img_hash_file}",
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+
 
 def test_cli_imghash_without_export_file(big_buck_bunny_trailer, cli_runner):
     p_video = big_buck_bunny_trailer
