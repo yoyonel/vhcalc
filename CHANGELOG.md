@@ -1,4 +1,10 @@
 # Changelog
+## 0.6.0 (2024-09-11)
+
+### Feat
+
+- **vhcalc**: add an option '--decompress' to main API entry 'imghash' for decompressing binary images hashes to hexadecimal representation
+
 ## 0.5.0 (2024-09-09)
 
 ### Feat
