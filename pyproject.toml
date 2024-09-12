@@ -1,6 +1,6 @@
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.5.0"
+version = "0.6.0"
 tag_format = "$version"
 version_files = [
     "pyproject.toml:version"
@@ -92,7 +92,6 @@ norecursedirs = [
     "virtualenv"
 ]
 
-
 [tool.coverage]
     [tool.coverage.report]
     show_missing = true
@@ -125,7 +124,7 @@ norecursedirs = [
 
 [tool.poetry]
 name = "vhcalc"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Lionel Atty <yoyonel@hotmail.com>"]
 description = "It's a client-side library that implements a custom algorithm for extracting video hashes (fingerprints) from any video source."
 license = "MIT license"
@@ -191,6 +190,9 @@ tox = "^4.8.0"
 [tool.poetry.scripts]
 export_imghash_from_media = "vhcalc.app:export_imghash_from_media"
 vhcalc = "vhcalc.app:cli"
+
+[tool.poetry.group.dev.dependencies]
+pytest-localftpserver = "^1.3.2"
 
 [build-system]
 requires = ["poetry>=1.0.0", "poetry-core>=1.0.0", "setuptools"]

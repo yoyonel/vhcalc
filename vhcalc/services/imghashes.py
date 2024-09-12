@@ -4,12 +4,13 @@ from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 from imagehash import ImageHash
 from rich import get_console
 
 from vhcalc.models.imghash_function import ImageHashingFunction
+from vhcalc.models.url import URL
 from vhcalc.services.reader_frames import build_reader_frames
 from vhcalc.tools.chunk import chunks
 from vhcalc.tools.imghash import bytes_to_imghash, imghash_to_bytes, rawframe_to_imghash
@@ -18,17 +19,18 @@ from vhcalc.tools.progress_bar import configure_progress_bar
 console = get_console()
 
 
-def b2a_frames_to_imghash(
-    binary_stream: BufferedReader,
-    chunk_nb_seconds: int = 15,
+def b2a_imghash(
+    # FIXME: ugly need to refactor
+    binary_stream: Union[BufferedReader, URL],
+    chunk_size_in_frames: int = 15 * 25,
     fn_imagehash: ImageHashingFunction = ImageHashingFunction.PerceptualHashing,
 ) -> Iterable[bytes]:
     """
-    Compute images hashes from binary stream input frames (from ffmpeg readings)
+    Compute images hashes from file (media/video) binary content stream (send to ffmpeg)
 
     Args:
-        binary_stream (BufferedReader): binary stream to read from media input
-        chunk_nb_seconds (int): Chunk size in seconds used for generating images hashes from media decompression.
+        binary_stream (BufferedReader): binary stream read from media file input
+        chunk_size_in_frames (int): Chunk size in frames used for generating images hashes from media decompression.
         fn_imagehash (ImageHashingFunction): ImageHash function for transforming PIL.Image to ImageHash
 
     Yields:
@@ -36,12 +38,12 @@ def b2a_frames_to_imghash(
 
     Example:
         >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
-        >>> next(b2a_frames_to_imghash(media_path.open("rb")))
+        >>> next(b2a_imghash(media_path.open("rb")))
         b'\xd5\xd5*\xd5*\xd4*\xd4'
     """
     # Read a video file
-    it_reader_frame, media_metadata = build_reader_frames(binary_stream)
-    chunk_size = int(media_metadata.fps * chunk_nb_seconds)
+    it_reader_frame, _ = build_reader_frames(binary_stream)
+    chunk_size = chunk_size_in_frames
 
     # configure chunk
     gen_imghashes = map(
