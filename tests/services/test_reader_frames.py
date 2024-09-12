@@ -4,6 +4,7 @@ from typing import Callable
 import pytest
 
 from vhcalc.models.metadata import MetaData
+from vhcalc.models.url import URL
 from vhcalc.services.reader_frames import build_reader_frames
 
 
@@ -47,5 +48,21 @@ def test_build_reader_frames_with_binary_stream_input(
     # consume reader frames
     nb_frames_read = len(list(gen_reader_frame))
     nb_frames_expected = metadata_video.nb_frames
-    # FIXME
-    assert 0 < nb_frames_read <= nb_frames_expected
+    # FIXME: need to be more accurate
+    assert abs(nb_frames_read - nb_frames_expected) <= int(metadata_video.fps)
+
+
+def test_build_reader_frames_from_url(ftp_server_up):
+    url = ftp_server_up
+    try:
+        gen_reader_frame, metadata = build_reader_frames(URL(url))
+    except IOError:
+        raise RuntimeError(
+            "Can't extract metadata from url, maybe a problem with FFMPEG binary !"
+        )
+    print(metadata)
+    nb_frames_read = len(list(gen_reader_frame))
+    nb_frames_expected = metadata.nb_frames
+    assert nb_frames_expected > 0
+    # FIXME: need to be more accurate
+    assert abs(nb_frames_read - nb_frames_expected) <= int(metadata.fps)
