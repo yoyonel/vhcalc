@@ -3,13 +3,14 @@ import pathlib
 import sys
 from importlib.metadata import version
 from io import BufferedReader, BufferedWriter
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 import rich_click as click
 from loguru import logger
 
 import vhcalc.services as services
 from vhcalc.models.imghash_function import ImageHashingFunction
+from vhcalc.models.url import URL
 from vhcalc.tools.forked.click_default_group import DefaultGroup
 from vhcalc.tools.forked.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
@@ -51,11 +52,17 @@ def cli() -> None:
     default=False,
     help="",
 )
+@click.option(
+    "--from-url",
+    type=URL,
+    help="",
+)
 def imghash(
     input_stream: BufferedReader,
     output_stream: BufferedWriter,
     image_hashing_method: str,
     decompress: bool,
+    from_url: Optional[URL],
 ) -> None:
     """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
     if decompress:
@@ -63,8 +70,14 @@ def imghash(
             output_stream.write(str(imghash_binary).encode())
         return
 
-    for frame_hash_binary in services.b2a_frames_to_imghash(
-        input_stream,
+    # FIXME: ugly need to refactor
+    b2a_imghash_input: Union[BufferedReader, URL]
+    if from_url:
+        b2a_imghash_input = from_url
+    else:
+        b2a_imghash_input = input_stream
+    for frame_hash_binary in services.b2a_imghash(
+        b2a_imghash_input,
         fn_imagehash=ImageHashingFunction[image_hashing_method],
     ):
         output_stream.write(frame_hash_binary)

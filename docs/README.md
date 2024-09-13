@@ -22,7 +22,7 @@ It's a client-side library that implements a custom algorithm for extracting vid
 
 ## Usage
 
-```sh
+```shell
 $ vhcalc --help
 Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 
@@ -35,7 +35,25 @@ export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
 ```
 
-### Media into binary images hashes (fingerprints)
+### `imghash` default entrypoint
+
+```shell
+$ vhcalc imghash --help
+Usage: vhcalc imghash [OPTIONS] [INPUT_STREAM] [OUTPUT_STREAM]
+
+  Simple form of the application: Input filepath > image hashes (to stdout by
+  default)
+
+Options:
+  --image-hashing-method [AverageHashing|PerceptualHashing|PerceptualHashing_Simple|DifferenceHashing|WaveletHashing]
+                                  [default: PerceptualHashing]
+  --decompress
+  --from-url URL
+  --help                          Show this message and exit.
+```
+
+
+#### Media into binary images hashes (fingerprints)
 ```shell
 # using pipes for input/output streams
 $ cat tests/data/big_buck_bunny_trailer_480p.mkv | \
@@ -53,7 +71,7 @@ The frame size for reading (32, 32) is different from the source frame size (854
 0001950 d6d5 b581 c26e f181 d5d5 d52a d528 d528
 0001960
 ```
-### Media to hexadecimal representation of images hashes (fingerprints)
+#### Media to hexadecimal representation of images hashes (fingerprints)
 
 ```shell
 $ cat tests/data/big_buck_bunny_trailer_480p.mkv | \
@@ -64,6 +82,7 @@ $ cat tests/data/big_buck_bunny_trailer_480p.mkv | \
     # output: string hexadecimal representation of images hashes (to stdout)
     fold -w 16 | tail -n 8
 The frame size for reading (32, 32) is different from the source frame size (854, 480).
+d592916d7a9a8565
 d59291656e9a85e5
 d5d291656a9a85e5
 d5d2912c6e9b85e4
@@ -73,11 +92,38 @@ d5d681b56ec281f1
 d5d52ad528d528d5%
 ```
 
+#### From URL
+
+```shell
+  # launching (in background) a webserver deserving `tests/data` files
+$ python3 -m http.server -d tests/data & \
+  # input: url to tests/data video serving by http server
+  vhcalc --from-url http://0.0.0.0:8000/big_buck_bunny_trailer_480p.mkv | \
+  # output/input: binary images hashes (through pipe stream)
+  vhcalc --decompress | \
+  # output: string hexadecimal representation of images hashes (to stdout)
+  fold -w 16 | tail -n 8; \
+  # killing the http server launch at the beginning
+  ps -ef | grep http.server | grep tests/data | grep -v grep | awk '{print $2}' | xargs kill
+[1] 2217597
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+127.0.0.1 - - [12/Sep/2024 16:36:44] "GET /big_buck_bunny_trailer_480p.mkv HTTP/1.1" 200 -
+The frame size for reading (32, 32) is different from the source frame size (854, 480).
+d592916d7a9a8565
+d59291656e9a85e5
+d5d291656a9a85e5
+d5d2912c6e9b85e4
+d5d2916d6e9281e5
+d5d2916d6ed281e1
+d5d681b56ec281f1
+d5d52ad528d528d5%
+[1]  + 2217597 terminated  python3 -m http.server -d tests/data
+```
 ## Docker
 
 Docker hub: [yoyonel/vhcalc](https://hub.docker.com/r/yoyonel/vhcalc/)
 
-```sh
+```shell
 $ docker run -it yoyonel/vhcalc:latest --help
 Usage: vhcalc [OPTIONS] COMMAND [ARGS]...
 

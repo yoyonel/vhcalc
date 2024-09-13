@@ -6,12 +6,16 @@ from typing import Any, BinaryIO, Iterator, Tuple, Union
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
 from vhcalc.models import MetaData
-from vhcalc.tools.forked.imageio_ffmpeg_io import read_frames_from_binary_stream
+from vhcalc.models.url import URL
+from vhcalc.tools.forked.imageio_ffmpeg_io import (
+    read_frames_from_binary_stream,
+    read_frames_from_url,
+)
 from vhcalc.tools.imghash import FRAME_SIZE
 
 
 def build_reader_frames(
-    media_input: Union[Path, Union[BufferedReader, BinaryIO]],
+    media_input: Union[Path, Union[BufferedReader, BinaryIO], URL],
     nb_seconds_to_extract: float = 0,
     seek_to_middle: bool = False,
     ffmpeg_reduce_verbosity: bool = True,
@@ -52,17 +56,19 @@ def build_reader_frames(
         nb_frames = count_frames_and_secs(s_media)[0]
     elif isinstance(media_input, BufferedReader):
         fn_read_frames = read_frames_from_binary_stream
+    elif isinstance(media_input, URL):
+        fn_read_frames = read_frames_from_url
     else:
         # TODO: handle this exception
         raise RuntimeError(f"Can't handle {type(media_input)=}")
 
     reader = fn_read_frames(
         media_input,
+        pix_fmt="gray",
         input_params=[*ffmpeg_seek_input_cmd],
         output_params=[
             *ffmpeg_seek_output_cmd,
             *("-vf", video_filters),
-            *("-pix_fmt", "gray"),
         ],
         bits_per_pixel=8,
     )

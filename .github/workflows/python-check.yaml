@@ -17,6 +17,9 @@ jobs:
             matrix:
                 platform: [ubuntu-latest, windows-latest, macos-latest]
                 python-version: [3.9, '3.10', '3.11', '3.12']
+        env:
+            IMAGEIO_FFMPEG_EXE: ffmpeg
+            FTP_FIXTURE_SCOPE: session
         steps:
             - name: Check out
               uses: actions/checkout@main
@@ -46,6 +49,8 @@ jobs:
 
             - name: Run tests with coverage
               run: |
+                  poetry run python -c 'from imageio_ffmpeg import get_ffmpeg_exe; print(get_ffmpeg_exe());'
+                  poetry run python -c 'from imageio_ffmpeg import get_ffmpeg_version; print(get_ffmpeg_version());'
                   inv test.cov
                   poetry run coverage lcov -o ./coverage/lcov.info
 

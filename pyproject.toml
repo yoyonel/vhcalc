@@ -92,7 +92,6 @@ norecursedirs = [
     "virtualenv"
 ]
 
-
 [tool.coverage]
     [tool.coverage.report]
     show_missing = true
@@ -191,6 +190,9 @@ tox = "^4.8.0"
 [tool.poetry.scripts]
 export_imghash_from_media = "vhcalc.app:export_imghash_from_media"
 vhcalc = "vhcalc.app:cli"
+
+[tool.poetry.group.dev.dependencies]
+pytest-localftpserver = "^1.3.2"
 
 [build-system]
 requires = ["poetry>=1.0.0", "poetry-core>=1.0.0", "setuptools"]
