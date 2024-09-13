@@ -1,4 +1,10 @@
 # Changelog
+## 0.7.0 (2024-09-13)
+
+### Feat
+
+- **vhcalc**: add an option '--from-url' to allow using an url (from ftp, http[s]) for input on ffmpeg command
+
 ## 0.6.0 (2024-09-11)
 
 ### Feat
