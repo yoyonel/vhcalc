@@ -1,6 +1,6 @@
 import inspect
 from importlib.metadata import version
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from tempfile import gettempdir
 
 from vhcalc.app import cli, export_imghash_from_media
@@ -8,6 +8,10 @@ from vhcalc.services.imghashes import (
     export_imghash_from_media as svc_export_imghash_from_media,
 )
 from vhcalc.services.reader_frames import build_reader_frames
+
+
+def stringify_path(p: Path) -> str:
+    return p.as_posix() if isinstance(p, PureWindowsPath) else str(p)
 
 
 def get_default_parameters(func) -> dict:
@@ -47,11 +51,11 @@ def test_cli_export_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
     p_video = big_buck_bunny_trailer
     resource_video_name = p_video.stem
 
-    binary_img_hash_file = tmpdir.mkdir("phash") / f"{resource_video_name}.phash"
+    binary_img_hash_file = Path(tmpdir.mkdir("phash") / f"{resource_video_name}.phash")
 
     result = cli_runner.invoke(
         export_imghash_from_media,
-        args=f"-r {str(p_video)} -o {binary_img_hash_file}",
+        args=f"-r {stringify_path(p_video)} -o {stringify_path(binary_img_hash_file)}",
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -66,7 +70,7 @@ def test_cli_export_imghash_without_export_file(big_buck_bunny_trailer, cli_runn
 
     result = cli_runner.invoke(
         export_imghash_from_media,
-        args=f"-r {str(p_video)}",
+        args=f"-r {stringify_path(p_video)}",
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -98,11 +102,11 @@ def test_cli_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
     p_video = big_buck_bunny_trailer
     resource_video_name = p_video.stem
 
-    binary_img_hash_file = tmpdir.mkdir("phash") / f"{resource_video_name}.phash"
+    binary_img_hash_file = Path(tmpdir.mkdir("phash") / f"{resource_video_name}.phash")
 
     result = cli_runner.invoke(
         cli,
-        args=f"{str(p_video)} {binary_img_hash_file}",
+        args=f"{stringify_path(p_video)} {stringify_path(binary_img_hash_file)}",
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -114,7 +118,7 @@ def test_cli_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
 
     result = cli_runner.invoke(
         cli,
-        args=f"--decompress {binary_img_hash_file}",
+        args=f"--decompress {stringify_path(binary_img_hash_file)}",
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -123,6 +127,8 @@ def test_cli_imghash(big_buck_bunny_trailer, cli_runner, tmpdir):
 def test_cli_imghash_without_export_file(big_buck_bunny_trailer, cli_runner):
     p_video = big_buck_bunny_trailer
 
-    result = cli_runner.invoke(cli, args=str(p_video), catch_exceptions=False)
+    result = cli_runner.invoke(
+        cli, args=stringify_path(p_video), catch_exceptions=False
+    )
     assert result.exit_code == 0
     # TODO: catch stdout with binary images hashes
