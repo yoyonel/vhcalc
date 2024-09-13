@@ -119,6 +119,29 @@ d5d681b56ec281f1
 d5d52ad528d528d5%
 [1]  + 2217597 terminated  python3 -m http.server -d tests/data
 ```
+
+##### From Youtube video
+
+Requirement: [yt-dlp - A feature-rich command-line audio/video downloader](https://github.com/yt-dlp/yt-dlp)
+
+```shell
+  # input: Youtube url grab by yt-dlp tool
+$ vhcalc --from-url $(yt-dlp --youtube-skip-dash-manifest -g https://www.youtube.com/watch?v=W6QOj6vWmoQ | head -n 1) | \
+  # output/input: binary images hashes (through pipe stream)
+  vhcalc --decompress | \
+  # output: string hexadecimal representation of images hashes (to stdout)
+  fold -w 16 | tail -n 8;
+The frame size for reading (32, 32) is different from the source frame size (606, 1080).
+8adaf123841eb379
+8adaf123841eb379
+8283bb72f46ce871
+8283bb72f46ce871
+8283bb72f46ce871
+8283bb72f46ce871
+8283bb72f46ce871
+8283bb72f46ce871%  
+```
+
 ## Docker
 
 Docker hub: [yoyonel/vhcalc](https://hub.docker.com/r/yoyonel/vhcalc/)
@@ -141,6 +164,29 @@ export-imghash-from-media  extracting and exporting binary video hashes
 $ cat tests/data/big_buck_bunny_trailer_480p.mkv | docker run -i --rm yoyonel/vhcalc:latest | md5sum
 The frame size for reading (32, 32) is different from the source frame size (854, 480).
 bf5c7468df01d78862c847596de92ff3  -
+
+# using HTTP server and url input
+$ python3 -m http.server -d tests/data & \
+  # input: url to tests/data video serving by http server
+  docker run -i --network host yoyonel/vhcalc --from-url http://0.0.0.0:8000/big_buck_bunny_trailer_480p.mkv | \
+  # output/input: binary images hashes (through pipe stream)
+  docker run -i yoyonel/vhcalc --decompress | \
+  # output: string hexadecimal representation of images hashes (to stdout)
+  fold -w 16 | tail -n 8; \
+  # killing the http server launch at the beginning
+  ps -ef | grep http.server | grep tests/data | grep -v grep | awk '{print $2}' | xargs kill
+[1] 1929365
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+127.0.0.1 - - [13/Sep/2024 14:59:04] "GET /big_buck_bunny_trailer_480p.mkv HTTP/1.1" 200 -
+The frame size for reading (32, 32) is different from the source frame size (854, 480).
+d592916d7a9a8565
+d59291656e9a85e5
+d5d291656a9a85e5
+d5d2912c6e9b85e4
+d5d2916d6e9281e5
+d5d2916d6ed281e1
+d5d681b56ec281f1
+d5d52ad528d528d5%
 ```
 
 ## Contributing
