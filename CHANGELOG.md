@@ -1,4 +1,10 @@
 # Changelog
+## 0.7.1 (2024-10-01)
+
+### Refactor
+
+- **imghashes**: rename images hashes functions
+
 ## 0.7.0 (2024-09-13)
 
 ### Feat
