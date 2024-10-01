@@ -9,8 +9,7 @@ import rich_click as click
 from loguru import logger
 
 import vhcalc.services as services
-from vhcalc.models.imghash_function import ImageHashingFunction
-from vhcalc.models.url import URL
+from vhcalc.models import URL, ImageHashingFunction
 from vhcalc.tools.forked.click_default_group import DefaultGroup
 from vhcalc.tools.forked.click_path import GlobPaths
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
@@ -76,7 +75,7 @@ def imghash(
         b2a_imghash_input = from_url
     else:
         b2a_imghash_input = input_stream
-    for frame_hash_binary in services.b2a_imghash(
+    for frame_hash_binary in services.b2b_stream_to_imghash(
         b2a_imghash_input,
         fn_imagehash=ImageHashingFunction[image_hashing_method],
     ):
