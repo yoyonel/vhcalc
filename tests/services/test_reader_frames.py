@@ -3,8 +3,7 @@ from typing import Callable
 
 import pytest
 
-from vhcalc.models.metadata import MetaData
-from vhcalc.models.url import URL
+from vhcalc.models import URL, MetaData
 from vhcalc.services.reader_frames import build_reader_frames
 
 

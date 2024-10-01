@@ -9,8 +9,7 @@ from typing import Iterable, Optional, Union
 from imagehash import ImageHash
 from rich import get_console
 
-from vhcalc.models.imghash_function import ImageHashingFunction
-from vhcalc.models.url import URL
+from vhcalc.models import URL, ImageHashingFunction
 from vhcalc.services.reader_frames import build_reader_frames
 from vhcalc.tools.chunk import chunks
 from vhcalc.tools.imghash import bytes_to_imghash, imghash_to_bytes, rawframe_to_imghash
@@ -19,7 +18,7 @@ from vhcalc.tools.progress_bar import configure_progress_bar
 console = get_console()
 
 
-def b2a_imghash(
+def b2b_stream_to_imghash(
     # FIXME: ugly need to refactor
     binary_stream: Union[BufferedReader, URL],
     chunk_size_in_frames: int = 15 * 25,
@@ -38,7 +37,7 @@ def b2a_imghash(
 
     Example:
         >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
-        >>> next(b2a_imghash(media_path.open("rb")))
+        >>> next(b2b_stream_to_imghash(media_path.open("rb")))
         b'\xd5\xd5*\xd5*\xd4*\xd4'
     """
     # Read a video file

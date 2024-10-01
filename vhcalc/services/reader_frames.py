@@ -5,8 +5,7 @@ from typing import Any, BinaryIO, Iterator, Tuple, Union
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
-from vhcalc.models import MetaData
-from vhcalc.models.url import URL
+from vhcalc.models import URL, MetaData
 from vhcalc.tools.forked.imageio_ffmpeg_io import (
     read_frames_from_binary_stream,
     read_frames_from_url,
@@ -20,6 +19,17 @@ def build_reader_frames(
     seek_to_middle: bool = False,
     ffmpeg_reduce_verbosity: bool = True,
 ) -> Tuple[Iterator[bytes], MetaData]:
+    """
+
+    Args:
+        media_input:
+        nb_seconds_to_extract:
+        seek_to_middle:
+        ffmpeg_reduce_verbosity:
+
+    Returns:
+
+    """
     ffmpeg_seek_input_cmd: list[str] = []
     ffmpeg_seek_output_cmd: list[str] = []
     s_media: str = ""
