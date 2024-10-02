@@ -152,6 +152,9 @@ ImageHash = "^4.3.1"
 Pillow = ">=9.1.1"
 imageio-ffmpeg = "^0.5.1"
 
+# Media informations
+pymediainfo = ">=6.1.0"
+
 types-setuptools = "^74.0.0.20240830"
 
 [tool.poetry.dev-dependencies]
@@ -190,9 +193,11 @@ tox = "^4.8.0"
 [tool.poetry.scripts]
 export_imghash_from_media = "vhcalc.app:export_imghash_from_media"
 vhcalc = "vhcalc.app:cli"
+vhcalc-mediainfo = "vhcalc.app:mediainfo"
 
 [tool.poetry.group.dev.dependencies]
 pytest-localftpserver = "^1.3.2"
+flatten-dict = "^0.4.2"
 
 [build-system]
 requires = ["poetry>=1.0.0", "poetry-core>=1.0.0", "setuptools"]

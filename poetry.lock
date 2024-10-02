@@ -753,6 +753,20 @@ pycodestyle = ">=2.12.0,<2.13.0"
 pyflakes = ">=3.2.0,<3.3.0"
 
 [[package]]
+name = "flatten-dict"
+version = "0.4.2"
+description = "A flexible utility for flattening and unflattening dict-like objects in Python."
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+files = [
+    {file = "flatten-dict-0.4.2.tar.gz", hash = "sha256:506a96b6e6f805b81ae46a0f9f31290beb5fa79ded9d80dbe1b7fa236ab43076"},
+    {file = "flatten_dict-0.4.2-py2.py3-none-any.whl", hash = "sha256:7e245b20c4c718981212210eec4284a330c9f713e632e98765560e05421e48ad"},
+]
+
+[package.dependencies]
+six = ">=1.12,<2.0"
+
+[[package]]
 name = "ghp-import"
 version = "2.1.0"
 description = "Copy your docs directly to the gh-pages branch."
@@ -1922,13 +1936,13 @@ testutils = ["gitpython (>3)"]
 
 [[package]]
 name = "pymdown-extensions"
-version = "10.11.1"
+version = "10.11.2"
 description = "Extension pack for Python Markdown."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pymdown_extensions-10.11.1-py3-none-any.whl", hash = "sha256:a2b28f5786e041f19cb5bb30a1c2c853668a7099da8e3dd822a5ad05f2e855e3"},
-    {file = "pymdown_extensions-10.11.1.tar.gz", hash = "sha256:a8836e955851542fa2625d04d59fdf97125ca001377478ed5618e04f9183a59a"},
+    {file = "pymdown_extensions-10.11.2-py3-none-any.whl", hash = "sha256:41cdde0a77290e480cf53892f5c5e50921a7ee3e5cd60ba91bf19837b33badcf"},
+    {file = "pymdown_extensions-10.11.2.tar.gz", hash = "sha256:bc8847ecc9e784a098efd35e20cba772bc5a1b529dfcef9dc1972db9021a1049"},
 ]
 
 [package.dependencies]
@@ -1937,6 +1951,19 @@ pyyaml = "*"
 
 [package.extras]
 extra = ["pygments (>=2.12)"]
+
+[[package]]
+name = "pymediainfo"
+version = "6.1.0"
+description = "A Python wrapper for the mediainfo library."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pymediainfo-6.1.0-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:69d5d3cac056c24a68a1129216aec82a222e804a35f88567c08585e8ae7ef2b3"},
+    {file = "pymediainfo-6.1.0-py3-none-win32.whl", hash = "sha256:19e6baeca3db71f12ed568f056de899fd02f380990fb10f43a26c32b67362dd3"},
+    {file = "pymediainfo-6.1.0-py3-none-win_amd64.whl", hash = "sha256:f3f6bad666c65ac993dd8d64f45a2b26ba2acd50f9875f74cebb624dbf2f8da0"},
+    {file = "pymediainfo-6.1.0.tar.gz", hash = "sha256:186a0b41a94524f0984d085ca6b945c79a254465b7097f2560dc0c04e8d1d8a5"},
+]
 
 [[package]]
 name = "pyopenssl"
@@ -2372,18 +2399,19 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "rich"
-version = "13.9.0"
+version = "13.9.1"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "rich-13.9.0-py3-none-any.whl", hash = "sha256:9338ab80106a9257e1a910510ff72f9c0d31a27aaa8f560751a54fe910a874b6"},
-    {file = "rich-13.9.0.tar.gz", hash = "sha256:06ff5147711c0f6cec2cdbb247a6cff251268a66d700c2557699bfe104fc0bf4"},
+    {file = "rich-13.9.1-py3-none-any.whl", hash = "sha256:b340e739f30aa58921dc477b8adaa9ecdb7cecc217be01d93730ee1bc8aa83be"},
+    {file = "rich-13.9.1.tar.gz", hash = "sha256:097cffdf85db1babe30cc7deba5ab3a29e1b9885047dab24c57e9a7f8a9c1466"},
 ]
 
 [package.dependencies]
 markdown-it-py = ">=2.2.0"
 pygments = ">=2.13.0,<3.0.0"
+typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
@@ -2851,4 +2879,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "aa66b6804818e3ca5f3c7e5a0164ead1998eb2a916ad299d9d7b57e35b5b6737"
+content-hash = "e3c41717a9eaa26d6112739fcc9067d6de9a7d126e4ef9354e13684f57864ae0"

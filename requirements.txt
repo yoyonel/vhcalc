@@ -287,6 +287,11 @@ pillow==10.4.0 ; python_version >= "3.9" and python_version < "4.0" \
 pygments==2.18.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
     --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
+pymediainfo==6.1.0 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:186a0b41a94524f0984d085ca6b945c79a254465b7097f2560dc0c04e8d1d8a5 \
+    --hash=sha256:19e6baeca3db71f12ed568f056de899fd02f380990fb10f43a26c32b67362dd3 \
+    --hash=sha256:69d5d3cac056c24a68a1129216aec82a222e804a35f88567c08585e8ae7ef2b3 \
+    --hash=sha256:f3f6bad666c65ac993dd8d64f45a2b26ba2acd50f9875f74cebb624dbf2f8da0
 pywavelets==1.6.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:058a750477dde633ac53b8806f835af3559d52db6532fb2b93c1f4b5441365b8 \
     --hash=sha256:0595c51472c9c5724fe087cb73e2797053fd25c788d6553fdad6ff61abc60e91 \
@@ -324,9 +329,9 @@ pywavelets==1.6.0 ; python_version >= "3.9" and python_version < "4.0" \
 rich-click==1.8.3 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:636d9c040d31c5eee242201b5bf4f2d358bfae4db14bb22ec1cafa717cfd02cd \
     --hash=sha256:6d75bdfa7aa9ed2c467789a0688bc6da23fbe3a143e19aa6ad3f8bac113d2ab3
-rich==13.9.0 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:06ff5147711c0f6cec2cdbb247a6cff251268a66d700c2557699bfe104fc0bf4 \
-    --hash=sha256:9338ab80106a9257e1a910510ff72f9c0d31a27aaa8f560751a54fe910a874b6
+rich==13.9.1 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:097cffdf85db1babe30cc7deba5ab3a29e1b9885047dab24c57e9a7f8a9c1466 \
+    --hash=sha256:b340e739f30aa58921dc477b8adaa9ecdb7cecc217be01d93730ee1bc8aa83be
 scipy==1.13.1 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:017367484ce5498445aade74b1d5ab377acdc65e27095155e448c88497755a5d \
     --hash=sha256:095a87a0312b08dfd6a6155cbbd310a8c51800fc931b8c0b84003014b874ed3c \

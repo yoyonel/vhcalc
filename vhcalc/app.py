@@ -7,6 +7,7 @@ from typing import Iterable, Optional, Union
 
 import rich_click as click
 from loguru import logger
+from pymediainfo import MediaInfo
 
 import vhcalc.services as services
 from vhcalc.models import URL, ImageHashingFunction
@@ -33,8 +34,18 @@ def cli() -> None:
 @cli.command(
     short_help="Compute image hashes from and to binaries stream (by default: stdin/out)"
 )
-@click.argument("input_stream", type=click.File("rb"), default=sys.stdin.buffer)
-@click.argument("output_stream", type=click.File("wb"), default=sys.stdout.buffer)
+@click.argument(
+    "input_stream",
+    type=click.File("rb"),
+    default=sys.stdin.buffer,
+    # help="Input stream (default: stdin)",
+)
+@click.argument(
+    "output_stream",
+    type=click.File("wb"),
+    default=sys.stdout.buffer,
+    # help="Output stream (default: stdout)",
+)
 @click.option(
     "--image-hashing-method",
     type=click.Choice(ImageHashingFunction.names()),
@@ -42,6 +53,7 @@ def cli() -> None:
     show_default=True,
     # TODO: post validation and transform this option string to callable image hashing function
     # see: [Python Enum support for click.Choice #605](https://github.com/pallets/click/issues/605#issuecomment-901099036)
+    help="The image hashing method to use.",
 )
 @click.option(
     "--decompress",
@@ -49,12 +61,12 @@ def cli() -> None:
     is_flag=True,
     type=bool,
     default=False,
-    help="",
+    help="Decompress images hashes from binary streams.",
 )
 @click.option(
     "--from-url",
     type=URL,
-    help="",
+    help="Allow to pass an URL for INPUT",
 )
 def imghash(
     input_stream: BufferedReader,
@@ -63,7 +75,11 @@ def imghash(
     decompress: bool,
     from_url: Optional[URL],
 ) -> None:
-    """Simple form of the application: Input filepath > image hashes (to stdout by default)"""
+    """Generate images hashes from INPUT binary stream and send it to OUTPUT stream.
+
+    INPUT stream (default: stdin)
+    OUTPUT stream (default: stdout)
+    """
     if decompress:
         for imghash_binary in services.a2b_imghash(input_stream):
             output_stream.write(str(imghash_binary).encode())
@@ -80,6 +96,20 @@ def imghash(
         fn_imagehash=ImageHashingFunction[image_hashing_method],
     ):
         output_stream.write(frame_hash_binary)
+
+
+@cli.command(short_help="Generate media informations (with `mediainfo` tool).")
+@click.argument(
+    "filename",
+    type=str,
+)
+def mediainfo(filename: str) -> None:
+    """
+    FILENAME path to the media file or file-like object which will be analyzed.
+        A URL can also be used if libmediainfo was compiled with CURL support.
+    """
+    json_mediainfo: str = MediaInfo.parse(filename, output="JSON")
+    click.echo(json_mediainfo)
 
 
 @cli.command(

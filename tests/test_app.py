@@ -1,9 +1,12 @@
 import inspect
+import json
 from importlib.metadata import version
 from pathlib import Path, PureWindowsPath
 from tempfile import gettempdir
 
-from vhcalc.app import cli, export_imghash_from_media
+from flatten_dict import flatten
+
+from vhcalc.app import cli, export_imghash_from_media, mediainfo
 from vhcalc.services.imghashes import (
     export_imghash_from_media as svc_export_imghash_from_media,
 )
@@ -132,3 +135,23 @@ def test_cli_imghash_without_export_file(big_buck_bunny_trailer, cli_runner):
     )
     assert result.exit_code == 0
     # TODO: catch stdout with binary images hashes
+
+
+def test_cli_mediainfo(big_buck_bunny_trailer, cli_runner):
+    p_video = big_buck_bunny_trailer
+    result = cli_runner.invoke(
+        mediainfo,
+        args=stringify_path(p_video),
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    # some output is present on invocation return
+    assert result.output
+    # this output is JSON compatible
+    json_mediainfo = json.loads(result.output)
+    # for our test media file example => the JSON media information is not empty
+    assert json_mediainfo
+    # simply check on media reference field
+    assert json_mediainfo.get("media").get("@ref") == str(p_video)
+    # check many media information attributes are defined
+    assert len(flatten(json_mediainfo, enumerate_types=(list,))) > 100
