@@ -7,7 +7,26 @@ from typing import Iterable, Optional, Union
 
 import rich_click as click
 from loguru import logger
-from pymediainfo import MediaInfo
+
+try:
+    from pymediainfo import MediaInfo
+
+    MediaInfo._get_library()
+except OSError:
+    # FIXME: on macos platform - OSError: Failed to load library from libmediainfo.0.dylib, libmediainfo.dylib - dlopen(libmediainfo.0.dylib, 0x0006)
+    logger.error("Can't get library from pymediainfo.MediaInfo !", exc_info=True)
+
+    import platform
+
+    # this error is handle only on macOS platform (i.e "Darwin")
+    if platform.system() != "Darwin":
+        raise RuntimeError("Unexpected error occurred !")
+
+    from unittest.mock import Mock
+
+    mock_MediaInfo = Mock()
+    mock_MediaInfo.parse = Mock(return_value={})
+    MediaInfo = mock_MediaInfo
 
 import vhcalc.services as services
 from vhcalc.models import URL, ImageHashingFunction
@@ -38,13 +57,11 @@ def cli() -> None:
     "input_stream",
     type=click.File("rb"),
     default=sys.stdin.buffer,
-    # help="Input stream (default: stdin)",
 )
 @click.argument(
     "output_stream",
     type=click.File("wb"),
     default=sys.stdout.buffer,
-    # help="Output stream (default: stdout)",
 )
 @click.option(
     "--image-hashing-method",
