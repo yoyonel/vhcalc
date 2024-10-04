@@ -1,4 +1,10 @@
 # Changelog
+## 0.8.0 (2024-10-04)
+
+### Feat
+
+- **cli**: add a CLI entrypoint 'mediainfo' for generating media information through mediainfo tool
+
 ## 0.7.1 (2024-10-01)
 
 ### Refactor
