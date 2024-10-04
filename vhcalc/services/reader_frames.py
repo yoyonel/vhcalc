@@ -17,7 +17,7 @@ def build_reader_frames(
     media_input: Union[Path, Union[BufferedReader, BinaryIO], URL],
     nb_seconds_to_extract: float = 0,
     seek_to_middle: bool = False,
-    ffmpeg_reduce_verbosity: bool = True,
+    ffmpeg_reduce_verbosity: bool = False,
 ) -> Tuple[Iterator[bytes], MetaData]:
     """
 
@@ -33,7 +33,6 @@ def build_reader_frames(
     ffmpeg_seek_input_cmd: list[str] = []
     ffmpeg_seek_output_cmd: list[str] = []
     s_media: str = ""
-    nb_frames: int = 0
 
     # https://trac.ffmpeg.org/wiki/Seeking#Cuttingsmallsections
     if ffmpeg_reduce_verbosity:
@@ -41,21 +40,26 @@ def build_reader_frames(
 
     if isinstance(media_input, Path):
         s_media = str(media_input)
-        meta: dict[str, Any] = next(read_frames(s_media))
+        # get media metadata from first yield of frames reader
+        metadata_from_frames_reader: dict[str, Any] = next(read_frames(s_media))
 
         # extract a (frame's) chunk around/in middle of the media
         if seek_to_middle:
             # it's an approximation, this command seek around/close to the middle
             ffmpeg_seek_input_cmd += (
                 "-ss",
-                str(datetime.timedelta(seconds=meta["duration"] // 2)),
+                str(
+                    datetime.timedelta(
+                        seconds=metadata_from_frames_reader["duration"] // 2
+                    )
+                ),
             )
 
         if nb_seconds_to_extract:
             # express in number of frames to extract (more precise)
             ffmpeg_seek_output_cmd += (
                 "-frames:v",
-                str(round(nb_seconds_to_extract * meta["fps"])),
+                str(round(nb_seconds_to_extract * metadata_from_frames_reader["fps"])),
             )
 
     # rescale output frame to 32x32
@@ -63,7 +67,6 @@ def build_reader_frames(
 
     if isinstance(media_input, Path):
         fn_read_frames = read_frames
-        nb_frames = count_frames_and_secs(s_media)[0]
     elif isinstance(media_input, BufferedReader):
         fn_read_frames = read_frames_from_binary_stream
     elif isinstance(media_input, URL):
@@ -82,17 +85,21 @@ def build_reader_frames(
         ],
         bits_per_pixel=8,
     )
-    # yield metadata
-    meta = next(reader)
+    # get media metadata from first yield of reader
+    metadata_from_frames_reader = next(reader)
 
-    if not nb_frames:
+    if isinstance(media_input, Path):
+        nb_frames = count_frames_and_secs(s_media)[0]
+    else:
         # FIXME: not accurate/exact => not working (very well)
-        nb_frames = int(meta["fps"] * meta["duration"])
+        nb_frames = int(
+            metadata_from_frames_reader["fps"] * metadata_from_frames_reader["duration"]
+        )
 
     # build metadata dataclass
     metadata = MetaData(
-        fps=meta["fps"],
-        duration=meta["duration"],
+        fps=metadata_from_frames_reader["fps"],
+        duration=metadata_from_frames_reader["duration"],
         nb_frames=nb_frames,
     )
 

@@ -120,7 +120,7 @@ d5d52ad528d528d5%
 [1]  + 2217597 terminated  python3 -m http.server -d tests/data
 ```
 
-##### From Youtube video
+##### From YouTube video
 
 Requirement: [yt-dlp - A feature-rich command-line audio/video downloader](https://github.com/yt-dlp/yt-dlp)
 
