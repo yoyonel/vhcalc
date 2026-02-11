@@ -26,7 +26,7 @@ except OSError:
 
     mock_MediaInfo = Mock()
     mock_MediaInfo.parse = Mock(return_value={})
-    MediaInfo = mock_MediaInfo
+    MediaInfo = mock_MediaInfo  # type: ignore[misc]
 
 import vhcalc.services as services
 from vhcalc.models import URL, ImageHashingFunction

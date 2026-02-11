@@ -52,7 +52,7 @@ def test_build_reader_frames_with_binary_stream_input(
 
 
 def test_build_reader_frames_from_url(ftp_server_up):
-    url = ftp_server_up
+    url = ftp_server_up.replace("localhost", "127.0.0.1")
     try:
         gen_reader_frame, metadata = build_reader_frames(URL(url))
     except IOError:
