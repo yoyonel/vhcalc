@@ -1,55 +1,45 @@
-FROM python:3.9-slim-buster AS builder
+FROM python:3.12-slim-bookworm AS builder
 
-ARG USERNAME=yoyonel
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONFAULTHANDLER=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PATH=$PATH:/home/$USERNAME/.local/bin
+# Compile bytecode for faster startup
+ENV UV_COMPILE_BYTECODE=1
+# Copy instead of hardlink to avoid issues when copying .venv to final stage
+ENV UV_LINK_MODE=copy
 
-RUN useradd --create-home $USERNAME
-USER $USERNAME
-WORKDIR /home/$USERNAME
+WORKDIR /app
 
-COPY . /home/$USERNAME/
+# Install dependencies
+# Using --mount to leverage cache
+COPY pyproject.toml uv.lock ./
+# Need README for package metadata (if referenced in pyproject.toml)
+COPY docs/README.md ./docs/README.md
+# Need source code to install the project
+COPY vhcalc ./vhcalc
 
-RUN echo '***VERSION python in builder image' && \
-    python --version
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-editable
 
-# hadolint ignore=DL3013
-RUN rm -rf ~/.cache/pip && \
-    python -m pip cache purge && \
-    python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir -r requirements.txt && \
-    pip wheel -w wheels --no-deps -e .
+FROM python:3.12-slim-bookworm
 
+# Install runtime dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libmediainfo0v5 && \
+    rm -rf /var/lib/apt/lists/*
 
-FROM python:3.9-slim-buster
+# Create user
+RUN useradd -m -u 1000 vhcalc
 
-ARG USERNAME=yoyonel
+USER vhcalc
+WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONFAULTHANDLER=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PATH=$PATH:/home/$USERNAME/.local/bin
+# Copy venv from builder
+COPY --from=builder --chown=vhcalc:vhcalc /app/.venv /app/.venv
 
-RUN useradd --create-home $USERNAME
-USER $USERNAME
-WORKDIR /home/$USERNAME
+# Add venv to PATH
+ENV PATH="/app/.venv/bin:$PATH"
 
-RUN echo '***VERSION python in final image' && \
-    python --version
-
-COPY --from=builder /home/$USERNAME/wheels /home/$USERNAME/wheels
-
-ENV PIP_NO_CACHE_DIR=1
-# hadolint ignore=DL3013
-RUN set -ex && \
-    \
-    python -m pip install --upgrade pip && \
-    PIP_FIND_LINKS="/home/$USERNAME/wheels" pip install /home/$USERNAME/wheels/vhcalc* && \
-    rm -rf /home/$USERNAME/.cache
-
+# Entrypoint
 ENTRYPOINT ["vhcalc"]
-# by default: expected stdin stream input and exporting result to stdout
 CMD ["-", "-"]

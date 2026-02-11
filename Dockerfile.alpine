@@ -1,0 +1,43 @@
+FROM python:3.12-alpine AS builder
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+# Compile bytecode
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache build-base
+
+# Copy files
+COPY pyproject.toml uv.lock ./
+COPY docs/README.md ./docs/README.md
+COPY vhcalc ./vhcalc
+
+# Install
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-editable
+
+FROM python:3.12-alpine
+
+# Install runtime dependencies
+RUN apk add --no-cache libmediainfo
+
+# Create user
+RUN adduser -D -u 1000 vhcalc
+
+USER vhcalc
+WORKDIR /app
+
+# Copy venv
+COPY --from=builder --chown=vhcalc:vhcalc /app/.venv /app/.venv
+
+# Path
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Entrypoint
+ENTRYPOINT ["vhcalc"]
+CMD ["-", "-"]

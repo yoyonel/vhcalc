@@ -68,8 +68,6 @@ coverage.xml
 *.log
 
 # Sphinx documentation
-docs/_build/
-
 # PyBuilder
 target/
 
@@ -94,3 +92,6 @@ venv/
 */*/*/*.swp
 
 # End of https://github.com/themattrix/python-pypi-template/blob/master/.dockerignore
+tests/
+docs/*
+!docs/README.md
