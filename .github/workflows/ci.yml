@@ -38,3 +38,14 @@ jobs:
       run: |
         # Verify help output matches expected regex
         ./build/vhcalc -h | grep -E "Usage: .*vhcalc"
+
+        # Verify hash generation on test video matches Python legacy output
+        EXPECTED_LAST="d5d52ad528d528d5"
+        ACTUAL_LAST=$(cat ../tests/data/big_buck_bunny_trailer_480p.mkv | ./build/vhcalc | ./build/vhcalc --decompress | fold -w 16 | tail -n 1)
+
+        if [ "$ACTUAL_LAST" != "$EXPECTED_LAST" ]; then
+          echo "Integration Test Failed: Expected last hash '$EXPECTED_LAST', got '$ACTUAL_LAST'"
+          exit 1
+        else
+          echo "Integration Test Passed: Hash matches legacy output."
+        fi
