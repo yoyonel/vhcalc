@@ -36,10 +36,16 @@ jobs:
                   python -m pip install -U pip poetry invoke
                   inv env.init-dev --no-pre-commit
 
-            - name: Setup FFmpeg
-              uses: AnimMouse/setup-ffmpeg@v1
+            - name: Setup FFmpeg (Linux/Windows)
+              if: runner.os != 'macOS'
+              uses: federicocarboni/setup-ffmpeg@v3
               with:
-                  version: 6.1
+                  ffmpeg-version: 6.1
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup FFmpeg (macOS)
+              if: runner.os == 'macOS'
+              run: brew install ffmpeg
 
             - name: Style check
               run: |

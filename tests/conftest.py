@@ -34,4 +34,4 @@ def ftp_server_up(ftpserver, big_buck_bunny_trailer):
         str(big_buck_bunny_trailer), style="url", anon=True
     )
     assert len(file_uploaded) == 1
-    return file_uploaded[0]
+    return file_uploaded[0].replace("localhost", "127.0.0.1")
