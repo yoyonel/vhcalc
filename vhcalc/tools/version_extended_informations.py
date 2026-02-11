@@ -15,12 +15,14 @@ def get_version_extended_informations() -> str:
     Returns:
         str: String representation of the version extended information:
             - python version: python version interpreter
-            - ffmpeg version: ffmpeg version binary (with some builds information like gcc version/platform)
+            - ffmpeg version: ffmpeg version binary (with some builds information
+              like gcc version/platform)
             - for each "core" dependencies package: imagehash, numpy and Pillow
             => name and version package (using by the application)
 
     Example:
-        The CLI option `version` get information from `get_version_extended_informations` function
+        The CLI option `version` get information from
+        `get_version_extended_informations` function
 
         $ vhcalc --version
         vhcalc, version 0.4.0

@@ -1,46 +1,46 @@
 """
-   click_default_group
-   ~~~~~~~~~~~~~~~~~~~
+click_default_group
+~~~~~~~~~~~~~~~~~~~
 
-   Define a default subcommand by `default=True`:
+Define a default subcommand by `default=True`:
 
-   .. sourcecode:: python
+.. sourcecode:: python
 
-      import click
-      from click_default_group import DefaultGroup
+   import click
+   from click_default_group import DefaultGroup
 
-      @click.group(cls=DefaultGroup, default_if_no_args=True)
-      def cli():
-          pass
+   @click.group(cls=DefaultGroup, default_if_no_args=True)
+   def cli():
+       pass
 
-      @cli.command(default=True)
-      def foo():
-          click.echo('foo')
+   @cli.command(default=True)
+   def foo():
+       click.echo('foo')
 
-      @cli.command()
-      def bar():
-          click.echo('bar')
+   @cli.command()
+   def bar():
+       click.echo('bar')
 
-   Then you can invoke that without explicit subcommand name:
+Then you can invoke that without explicit subcommand name:
 
-   .. sourcecode:: console
+.. sourcecode:: console
 
-      $ cli.py --help
-      Usage: cli.py [OPTIONS] COMMAND [ARGS]...
+   $ cli.py --help
+   Usage: cli.py [OPTIONS] COMMAND [ARGS]...
 
-      Options:
-        --help    Show this message and exit.
+   Options:
+     --help    Show this message and exit.
 
-      Command:
-        foo*
-        bar
+   Command:
+     foo*
+     bar
 
-      $ cli.py
-      foo
-      $ cli.py foo
-      foo
-      $ cli.py bar
-      bar
+   $ cli.py
+   foo
+   $ cli.py foo
+   foo
+   $ cli.py bar
+   bar
 
 """
 
@@ -77,14 +77,14 @@ class DefaultGroup(click.Group):
         self.add_command(command)
         self.default_cmd_name = cmd_name
 
-    def parse_args(self, ctx: click.core.Context, args: t.List[str]) -> t.List[str]:
+    def parse_args(self, ctx: click.core.Context, args: list[str]) -> list[str]:
         if not args and self.default_if_no_args:
             args.insert(0, self.default_cmd_name)
         return super().parse_args(ctx, args)
 
     def get_command(
         self, ctx: click.core.Context, cmd_name: str
-    ) -> t.Optional[click.core.Command]:
+    ) -> click.core.Command | None:
         if cmd_name not in self.commands:
             # No command name matched.
             ctx.arg0 = cmd_name  # type: ignore
@@ -92,8 +92,8 @@ class DefaultGroup(click.Group):
         return super().get_command(ctx, cmd_name)
 
     def resolve_command(
-        self, ctx: click.core.Context, args: t.List[str]
-    ) -> t.Tuple[t.Optional[str], t.Optional[click.core.Command], t.List[str]]:
+        self, ctx: click.core.Context, args: list[str]
+    ) -> tuple[str | None, click.core.Command | None, list[str]]:
         cmd_name, cmd, args = super().resolve_command(ctx, args)
         if cmd and hasattr(ctx, "arg0"):
             args.insert(0, ctx.arg0)
@@ -116,9 +116,7 @@ class DefaultGroup(click.Group):
 
     def command(
         self, *args: t.Any, **kwargs: t.Any
-    ) -> t.Union[
-        t.Callable[[t.Callable[..., t.Any]], click.core.Command], click.core.Command
-    ]:
+    ) -> t.Callable[[t.Callable[..., t.Any]], click.core.Command] | click.core.Command:
         default = kwargs.pop("default", False)
         decorator: t.Callable[[t.Callable[..., t.Any]], click.core.Command] = (
             super().command(*args, **kwargs)
@@ -157,9 +155,9 @@ class DefaultCommandFormatter(click.formatting.HelpFormatter):
         return getattr(self.formatter, attr)
 
     def write_dl(
-        self, rows: t.Sequence[t.Tuple[str, str]], *args: t.Any, **kwargs: t.Any
+        self, rows: t.Sequence[tuple[str, str]], *args: t.Any, **kwargs: t.Any
     ) -> None:
-        rows_: t.List[t.Tuple[str, str]] = []
+        rows_: list[tuple[str, str]] = []
         for cmd_name, text in rows:
             if cmd_name == self.group.default_cmd_name:
                 rows_.insert(0, (cmd_name + self.mark, text))

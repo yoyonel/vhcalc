@@ -1,5 +1,4 @@
 from datetime import timedelta
-from typing import Optional, Tuple
 
 from rich import get_console
 from rich.console import Console
@@ -27,8 +26,8 @@ class TimeElapsedOverRemainingColumn(TimeRemainingColumn):
 
 
 def configure_progress_bar(
-    filename: str, total: int, console: Optional[Console] = None
-) -> Tuple[Progress, TaskID]:
+    filename: str, total: int, console: Console | None = None
+) -> tuple[Progress, TaskID]:
     progress = Progress(
         TextColumn("[bold blue]{task.fields[filename]}", justify="right"),
         BarColumn(bar_width=None),

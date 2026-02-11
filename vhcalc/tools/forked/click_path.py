@@ -1,8 +1,8 @@
 # from: https://gitlab.com/abraxos/click-path/-/blob/a1536f8a2dcbcee026e77a23cc515fe0decb824d/click_path/core.py
+from collections.abc import Iterable
 from glob import iglob
 from os import R_OK, W_OK, access
 from pathlib import Path
-from typing import Iterable, Tuple
 
 import rich_click as click
 from typeguard import typechecked
@@ -38,7 +38,7 @@ class GlobPaths(click.ParamType):
         self.at_least_one = at_least_one
 
     @typechecked
-    def _validated_path(self, file_path: Path) -> Tuple[Path, bool, str]:
+    def _validated_path(self, file_path: Path) -> tuple[Path, bool, str]:
         if not file_path.exists():
             return file_path, False, "does not exist"
         if self.writable_only and not access(str(file_path), W_OK):

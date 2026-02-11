@@ -1,5 +1,6 @@
 import binascii
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 
 import imagehash
 import numpy as np
@@ -50,7 +51,9 @@ def bytes_to_imghash(raw_bytes: bytes) -> ImageHash:
             np.array([False, False, False, False, False, False, False, False]), \
             np.array([False, False, False, False, False, False, False, False]), \
             np.array([False, False, False, False, False, False, False, False])]))
-        >>> imghash_reconstructed = bytes_to_imghash(b'\\xd5\\x00\\x00\\x00\\x00\\x00\\x00\\x00')
+        >>> imghash_reconstructed = bytes_to_imghash(
+        ...     b'\\xd5\\x00\\x00\\x00\\x00\\x00\\x00\\x00'
+        ... )
         >>> str(imghash_reconstructed)
         'd500000000000000'
     """

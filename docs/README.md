@@ -18,7 +18,14 @@ It's a client-side library that implements a custom algorithm for extracting vid
 ## Getting Started
 
 ### Prerequisites
-* [Python](https://www.python.org/downloads/)
+* [uv](https://github.com/astral-sh/uv)
+* [Python](https://www.python.org/downloads/) (managed by uv)
+
+## Installation
+
+```shell
+uv sync
+```
 
 ## Usage
 

@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster AS builder
+FROM python:3.12-slim-bookworm AS builder
 
 ARG USERNAME=yoyonel
 
@@ -11,20 +11,15 @@ RUN useradd --create-home $USERNAME
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-COPY . /home/$USERNAME/
+COPY --chown=$USERNAME:$USERNAME . /home/$USERNAME/
 
-RUN echo '***VERSION python in builder image' && \
-    python --version
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-# hadolint ignore=DL3013
-RUN rm -rf ~/.cache/pip && \
-    python -m pip cache purge && \
-    python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir -r requirements.txt && \
-    pip wheel -w wheels --no-deps -e .
+# Build wheel
+RUN uv build
 
-
-FROM python:3.9-slim-buster
+FROM python:3.12-slim-bookworm
 
 ARG USERNAME=yoyonel
 
@@ -37,17 +32,12 @@ RUN useradd --create-home $USERNAME
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-RUN echo '***VERSION python in final image' && \
-    python --version
-
-COPY --from=builder /home/$USERNAME/wheels /home/$USERNAME/wheels
+COPY --from=builder /home/$USERNAME/dist /home/$USERNAME/dist
 
 ENV PIP_NO_CACHE_DIR=1
-# hadolint ignore=DL3013
 RUN set -ex && \
-    \
     python -m pip install --upgrade pip && \
-    PIP_FIND_LINKS="/home/$USERNAME/wheels" pip install /home/$USERNAME/wheels/vhcalc* && \
+    pip install /home/$USERNAME/dist/*.whl && \
     rm -rf /home/$USERNAME/.cache
 
 ENTRYPOINT ["vhcalc"]
