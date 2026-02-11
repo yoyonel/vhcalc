@@ -71,6 +71,7 @@ tests/
 
 # Sphinx documentation
 docs/
+!docs/README.md
 
 # PyBuilder
 target/
