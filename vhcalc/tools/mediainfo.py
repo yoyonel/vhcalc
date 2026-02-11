@@ -4,6 +4,8 @@ from unittest.mock import Mock
 
 from loguru import logger
 
+MediaInfo: Any
+
 try:
     from pymediainfo import MediaInfo as _MediaInfo
 
@@ -17,4 +19,4 @@ except OSError:
 
     mock_MediaInfo = Mock()
     mock_MediaInfo.parse = Mock(return_value={})
-    MediaInfo: Any = mock_MediaInfo
+    MediaInfo = mock_MediaInfo

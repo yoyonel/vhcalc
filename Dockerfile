@@ -9,9 +9,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 RUN useradd --create-home $USERNAME
 USER $USERNAME
-WORKDIR /home/$USERNAME
+WORKDIR /home/$USERNAME/app
 
-COPY --chown=$USERNAME:$USERNAME . /home/$USERNAME/
+COPY --chown=$USERNAME:$USERNAME . /home/$USERNAME/app/
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
@@ -32,7 +32,7 @@ RUN useradd --create-home $USERNAME
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-COPY --from=builder /home/$USERNAME/dist /home/$USERNAME/dist
+COPY --from=builder /home/$USERNAME/app/dist /home/$USERNAME/dist
 
 ENV PIP_NO_CACHE_DIR=1
 RUN set -ex && \
