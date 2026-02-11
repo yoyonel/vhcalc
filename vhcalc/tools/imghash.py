@@ -1,5 +1,6 @@
 import binascii
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 
 import imagehash
 import numpy as np

@@ -1,7 +1,8 @@
 import datetime
-from io import BufferedReader
+from collections.abc import Iterator
+from io import BufferedReader, IOBase
 from pathlib import Path
-from typing import Any, BinaryIO, Iterator, Tuple, Union
+from typing import Any, BinaryIO
 
 from imageio_ffmpeg import count_frames_and_secs, read_frames
 
@@ -14,11 +15,11 @@ from vhcalc.tools.imghash import FRAME_SIZE
 
 
 def build_reader_frames(
-    media_input: Union[Path, Union[BufferedReader, BinaryIO], URL],
+    media_input: Path | BufferedReader | BinaryIO | URL,
     nb_seconds_to_extract: float = 0,
     seek_to_middle: bool = False,
     ffmpeg_reduce_verbosity: bool = False,
-) -> Tuple[Iterator[bytes], MetaData]:
+) -> tuple[Iterator[bytes], MetaData]:
     """
 
     Args:
@@ -36,7 +37,7 @@ def build_reader_frames(
 
     # https://trac.ffmpeg.org/wiki/Seeking#Cuttingsmallsections
     if ffmpeg_reduce_verbosity:
-        ffmpeg_seek_input_cmd += "-hide_banner -nostats -nostdin".split(" ")
+        ffmpeg_seek_input_cmd += ["-hide_banner", "-nostats", "-nostdin"]
 
     if isinstance(media_input, Path):
         s_media = str(media_input)
@@ -67,13 +68,12 @@ def build_reader_frames(
 
     if isinstance(media_input, Path):
         fn_read_frames = read_frames
-    elif isinstance(media_input, BufferedReader):
+    elif isinstance(media_input, (BufferedReader, IOBase)):
         fn_read_frames = read_frames_from_binary_stream
     elif isinstance(media_input, URL):
         fn_read_frames = read_frames_from_url
     else:
-        # TODO: handle this exception
-        raise RuntimeError(f"Can't handle {type(media_input)=}")
+        raise TypeError(f"Unsupported media input type: {type(media_input)}")
 
     reader = fn_read_frames(
         media_input,

@@ -148,7 +148,7 @@ def read_frames_from_binary_stream(
         if not log_catcher.header:
             err2 = log_catcher.get_text(0.2)
             fmt = "Could not load meta information\n=== stderr ===\n{}"
-            raise IOError(fmt.format(err2))
+            raise OSError(fmt.format(err2))
         # TODO: maybe an another log error type for pipe input ... need to look at it !
         # elif "No such file or directory" in log_catcher.header:
         #     raise IOError("{} not found! Wrong path?".format(path))
@@ -161,16 +161,16 @@ def read_frames_from_binary_stream(
         width, height = meta["size"]
         framesize_bits = width * height * bits_per_pixel
         framesize_bytes = framesize_bits / 8
-        assert (
-            framesize_bytes.is_integer()
-        ), "incorrect bits_per_pixel, framesize in bytes must be an int"
+        assert framesize_bytes.is_integer(), (
+            "incorrect bits_per_pixel, framesize in bytes must be an int"
+        )
         framesize_bytes = int(framesize_bytes)
         framenr = 0
 
         while True:
             framenr += 1
             try:
-                bb = bytes()
+                bb = b""
                 while len(bb) < framesize_bytes:
                     extra_bytes = process.stdout.read(framesize_bytes - len(bb))
                     if not extra_bytes:
@@ -351,7 +351,7 @@ def read_frames_from_url(
         if not log_catcher.header:
             err2 = log_catcher.get_text(0.2)
             fmt = "Could not load meta information\n=== stderr ===\n{}"
-            raise IOError(fmt.format(err2))
+            raise OSError(fmt.format(err2))
         # elif "No such file or directory" in log_catcher.header:
         #     raise IOError("{} not found! Wrong path?".format(path))
 
@@ -363,16 +363,16 @@ def read_frames_from_url(
         width, height = meta["size"]
         framesize_bits = width * height * bits_per_pixel
         framesize_bytes = framesize_bits / 8
-        assert (
-            framesize_bytes.is_integer()
-        ), "incorrect bits_per_pixel, framesize in bytes must be an int"
+        assert framesize_bytes.is_integer(), (
+            "incorrect bits_per_pixel, framesize in bytes must be an int"
+        )
         framesize_bytes = int(framesize_bytes)
         framenr = 0
 
         while True:
             framenr += 1
             try:
-                bb = bytes()
+                bb = b""
                 while len(bb) < framesize_bytes:
                     extra_bytes = process.stdout.read(framesize_bytes - len(bb))
                     if not extra_bytes:

@@ -1,37 +1,17 @@
-# -*- coding: utf-8 -*-
 import pathlib
 import sys
+from collections.abc import Iterable
 from importlib.metadata import version
 from io import BufferedReader, BufferedWriter
-from typing import Iterable, Optional, Union
 
 import rich_click as click
 from loguru import logger
-
-try:
-    from pymediainfo import MediaInfo
-
-    MediaInfo._get_library()
-except OSError:
-    # FIXME: on macos platform - OSError: Failed to load library from libmediainfo.0.dylib, libmediainfo.dylib - dlopen(libmediainfo.0.dylib, 0x0006)
-    logger.error("Can't get library from pymediainfo.MediaInfo !", exc_info=True)
-
-    import platform
-
-    # this error is handle only on macOS platform (i.e "Darwin")
-    if platform.system() != "Darwin":
-        raise RuntimeError("Unexpected error occurred !")
-
-    from unittest.mock import Mock
-
-    mock_MediaInfo = Mock()
-    mock_MediaInfo.parse = Mock(return_value={})
-    MediaInfo = mock_MediaInfo
 
 import vhcalc.services as services
 from vhcalc.models import URL, ImageHashingFunction
 from vhcalc.tools.forked.click_default_group import DefaultGroup
 from vhcalc.tools.forked.click_path import GlobPaths
+from vhcalc.tools.mediainfo import MediaInfo
 from vhcalc.tools.version_extended_informations import get_version_extended_informations
 
 
@@ -90,7 +70,7 @@ def imghash(
     output_stream: BufferedWriter,
     image_hashing_method: str,
     decompress: bool,
-    from_url: Optional[URL],
+    from_url: URL | None,
 ) -> None:
     """Generate images hashes from INPUT binary stream and send it to OUTPUT stream.
 
@@ -103,11 +83,7 @@ def imghash(
         return
 
     # FIXME: ugly need to refactor
-    b2a_imghash_input: Union[BufferedReader, URL]
-    if from_url:
-        b2a_imghash_input = from_url
-    else:
-        b2a_imghash_input = input_stream
+    b2a_imghash_input = from_url or input_stream
     for frame_hash_binary in services.b2b_stream_to_imghash(
         b2a_imghash_input,
         fn_imagehash=ImageHashingFunction[image_hashing_method],
@@ -153,7 +129,7 @@ def mediainfo(filename: str) -> None:
 )
 @logger.catch
 def export_imghash_from_media(
-    medias_pattern: Iterable[pathlib.Path], output_file: Optional[pathlib.Path]
+    medias_pattern: Iterable[pathlib.Path], output_file: pathlib.Path | None
 ) -> None:
     """Click entrypoint for extracting and exporting binary video hashes (fingerprints) from any video source"""
     for media in medias_pattern:

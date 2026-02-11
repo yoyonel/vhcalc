@@ -2,8 +2,9 @@
 https://stackoverflow.com/questions/8290397/how-to-split-an-iterable-in-constant-size-chunks
 """
 
+from collections.abc import Iterator
 from itertools import chain, islice
-from typing import Any, Iterator
+from typing import Any
 
 
 def chunks(iterable: Iterator[Any], size: int) -> Iterator[Any]:

@@ -28,7 +28,7 @@ def big_buck_bunny_trailer(resource_video_path) -> Path:
     return resource_video_path("big_buck_bunny_trailer_480p.mkv")
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(autouse=True)
 def ftp_server_up(ftpserver, big_buck_bunny_trailer):
     file_uploaded = ftpserver.put_files(
         str(big_buck_bunny_trailer), style="url", anon=True

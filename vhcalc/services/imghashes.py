@@ -1,10 +1,10 @@
+from collections.abc import Iterable
 from functools import partial
 from io import BufferedReader, BytesIO
 from pathlib import Path
 
 # https://pypi.org/project/click-pathlib/
 from tempfile import gettempdir
-from typing import Iterable, Optional, Union
 
 from imagehash import ImageHash
 from rich import get_console
@@ -20,7 +20,7 @@ console = get_console()
 
 def b2b_stream_to_imghash(
     # FIXME: ugly need to refactor
-    binary_stream: Union[BufferedReader, URL],
+    binary_stream: BufferedReader | URL,
     chunk_size_in_frames: int = 15 * 25,
     fn_imagehash: ImageHashingFunction = ImageHashingFunction.PerceptualHashing,
 ) -> Iterable[bytes]:
@@ -51,9 +51,7 @@ def b2b_stream_to_imghash(
     gen_chunk_imghashes = chunks(gen_imghashes, chunk_size)
     # for each chunk of frames
     for chunk_imghashes in gen_chunk_imghashes:
-        for bin_imghash in map(imghash_to_bytes, chunk_imghashes):
-            # and write (chunk of) images hashes result on export file
-            yield bin_imghash
+        yield from map(imghash_to_bytes, chunk_imghashes)
 
 
 def a2b_imghash(
@@ -83,7 +81,7 @@ def a2b_imghash(
 
 def export_imghash_from_media(
     input_media: Path,
-    output_file: Optional[Path] = None,
+    output_file: Path | None = None,
     chunk_nb_seconds: int = 15,
     unlink_export_file: bool = True,
 ) -> Path:
