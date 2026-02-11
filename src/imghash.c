@@ -1,0 +1,88 @@
+#include "imghash.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+// 32x32 DCT-II implementation
+// Input: 32x32 image (row-major)
+// Output: 32x32 DCT coefficients (row-major)
+static void dct32(const double *input, double *output) {
+    double temp[32 * 32];
+
+    // 1D DCT on rows
+    for (int y = 0; y < 32; y++) {
+        for (int k = 0; k < 32; k++) {
+            double sum = 0.0;
+            for (int n = 0; n < 32; n++) {
+                sum += input[y * 32 + n] * cos((M_PI / 32.0) * (n + 0.5) * k);
+            }
+            if (fabs(sum) < 1e-6) sum = 0.0;
+            temp[y * 32 + k] = sum;
+        }
+    }
+
+    // 1D DCT on cols of temp
+    for (int x = 0; x < 32; x++) {
+        for (int k = 0; k < 32; k++) {
+            double sum = 0.0;
+            for (int n = 0; n < 32; n++) {
+                sum += temp[n * 32 + x] * cos((M_PI / 32.0) * (n + 0.5) * k);
+            }
+            if (fabs(sum) < 1e-6) sum = 0.0;
+            output[k * 32 + x] = sum;
+        }
+    }
+}
+
+static int compare_doubles(const void *a, const void *b) {
+    double da = *(const double *)a;
+    double db = *(const double *)b;
+    if (da > db) return 1;
+    if (da < db) return -1;
+    return 0;
+}
+
+uint64_t phash_compute(const uint8_t *image) {
+    double input[32 * 32];
+    double dct_output[32 * 32];
+    double low_freq[8 * 8];
+    double sorted_low_freq[8 * 8];
+
+    // Convert to double
+    for (int i = 0; i < 32 * 32; i++) {
+        input[i] = (double)image[i];
+    }
+
+    dct32(input, dct_output);
+
+    // Extract 8x8 top-left
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            low_freq[y * 8 + x] = dct_output[y * 32 + x];
+        }
+    }
+
+    // Compute median
+    memcpy(sorted_low_freq, low_freq, sizeof(low_freq));
+    qsort(sorted_low_freq, 64, sizeof(double), compare_doubles);
+
+    // Median of 64 elements (even) is average of indices 31 and 32
+    double median = (sorted_low_freq[31] + sorted_low_freq[32]) / 2.0;
+
+
+    // Compute hash
+    uint64_t hash = 0;
+    uint64_t one = 1;
+    for (int i = 0; i < 64; i++) {
+        if (low_freq[i] > median) {
+            hash |= (one << (63 - i)); // MSB first (index 0 is MSB)
+        }
+    }
+
+    return hash;
+}
