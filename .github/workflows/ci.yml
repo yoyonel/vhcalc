@@ -22,15 +22,19 @@ jobs:
         sudo apt-get install -y ffmpeg cppcheck clang-tidy
 
     - name: Build
+      working-directory: c_impl
       run: just build
 
     - name: Run Tests
+      working-directory: c_impl
       run: just test
 
     - name: Static Analysis
+      working-directory: c_impl
       run: just check
 
     - name: Integration Test
+      working-directory: c_impl
       run: |
         # Verify help output matches expected regex
         ./build/vhcalc -h | grep -E "Usage: .*vhcalc"

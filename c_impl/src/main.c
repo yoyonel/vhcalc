@@ -88,44 +88,41 @@ int main(int argc, char *argv[]) {
     video_reader_t *video_ctx = NULL;
     int use_stdio = 0;
 
-    if (strcmp(input_path, "-") == 0) {
-        use_stdio = 1;
-        in_stream = stdin;
-    } else {
-        if (decompress) {
+    if (decompress) {
+        if (strcmp(input_path, "-") == 0) {
+            in_stream = stdin;
+        } else {
             in_stream = fopen(input_path, "rb");
             if (!in_stream) {
                 perror("fopen");
                 return 1;
             }
-            use_stdio = 1;
-        } else {
-            video_ctx = video_reader_open(input_path);
-            if (!video_ctx) {
-                fprintf(stderr, "Failed to open video file or spawn ffmpeg.\n");
-                return 1;
-            }
         }
-    }
 
-    if (decompress) {
         // Read 8 bytes chunks, print as hex
         uint8_t buf[8];
-        // We know use_stdio is 1 because decompress implies fopen or stdin
         while (fread(buf, 1, 8, in_stream) == 8) {
             uint64_t h = bytes_to_uint64(buf);
             print_hash_hex(h, stdout);
         }
+
+        if (in_stream != stdin) {
+            fclose(in_stream);
+        }
     } else {
+        // Hashing mode: Use video reader (ffmpeg)
+        // If input_path is "-", ffmpeg will read from stdin
+        video_ctx = video_reader_open(input_path);
+        if (!video_ctx) {
+            fprintf(stderr, "Failed to open video file or spawn ffmpeg.\n");
+            return 1;
+        }
+
         // Read 32x32 frames, compute hash, write binary
         uint8_t frame[32 * 32];
         size_t n;
         while (1) {
-            if (use_stdio) {
-                n = fread(frame, 1, 32 * 32, in_stream);
-            } else {
-                n = video_reader_read(video_ctx, frame, 32 * 32);
-            }
+            n = video_reader_read(video_ctx, frame, 32 * 32);
 
             if (n != 32 * 32) break;
 
