@@ -33,7 +33,7 @@ imghash*                   Compute image hashes from and to binaries stream
                            (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
-mediainfo                  Generate media informations (with `mediainfo`
+mediainfo                  Generate media information (with `mediainfo`
                            tool).
 ```
 
@@ -191,7 +191,7 @@ imghash*                   Compute image hashes from and to binaries stream
                            (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
-mediainfo                  Generate media informations (with `mediainfo`
+mediainfo                  Generate media information (with `mediainfo`
                            tool).
 ```
 
