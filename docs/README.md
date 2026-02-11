@@ -33,6 +33,8 @@ imghash*                   Compute image hashes from and to binaries stream
                            (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
+mediainfo                  Generate media informations (with `mediainfo`
+                           tool).
 ```
 
 ### `imghash` default entrypoint
@@ -41,17 +43,49 @@ export-imghash-from-media  extracting and exporting binary video hashes
 $ vhcalc imghash --help
 Usage: vhcalc imghash [OPTIONS] [INPUT_STREAM] [OUTPUT_STREAM]
 
-  Simple form of the application: Input filepath > image hashes (to stdout by
-  default)
+  Generate images hashes from INPUT binary stream and send it to OUTPUT
+  stream.
+
+  INPUT stream (default: stdin) OUTPUT stream (default: stdout)
 
 Options:
   --image-hashing-method [AverageHashing|PerceptualHashing|PerceptualHashing_Simple|DifferenceHashing|WaveletHashing]
-                                  [default: PerceptualHashing]
-  --decompress
-  --from-url URL
+                                  The image hashing method to use.  [default:
+                                  PerceptualHashing]
+  --decompress                    Decompress images hashes from binary
+                                  streams.
+  --from-url URL                  Allow to pass an URL for INPUT
   --help                          Show this message and exit.
 ```
 
+### `export-imghash-from-media` entrypoint
+
+```shell
+$ vhcalc export-imghash-from-media --help
+Usage: vhcalc export-imghash-from-media [OPTIONS]
+
+  Click entrypoint for extracting and exporting binary video hashes
+  (fingerprints) from any video source
+
+Options:
+  -r, --medias_pattern PATH-OR-GLOB
+                                  Pattern to find medias  [required]
+  -o, --output-file PATH          File where to write images hashes.
+  --help                          Show this message and exit.
+```
+
+### `mediainfo` entrypoint
+
+```shell
+$ vhcalc mediainfo --help
+Usage: vhcalc mediainfo [OPTIONS] FILENAME
+
+  FILENAME path to the media file or file-like object which will be analyzed.
+  A URL can also be used if libmediainfo was compiled with CURL support.
+
+Options:
+  --help  Show this message and exit.
+```
 
 #### Media into binary images hashes (fingerprints)
 ```shell
@@ -157,6 +191,8 @@ imghash*                   Compute image hashes from and to binaries stream
                            (by default: stdin/out)
 export-imghash-from-media  extracting and exporting binary video hashes
                            (fingerprints) from any video source
+mediainfo                  Generate media informations (with `mediainfo`
+                           tool).
 ```
 
 ```shell
