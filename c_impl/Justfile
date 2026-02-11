@@ -7,6 +7,9 @@ clean:
 test:
     make test
 
+asan:
+    make asan
+
 check:
     cppcheck --enable=warning,performance,portability,information --suppress=missingIncludeSystem -I include -I src src
     clang-tidy src/*.c -- -Iinclude -Isrc -std=c11

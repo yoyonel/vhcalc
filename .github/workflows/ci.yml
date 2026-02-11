@@ -29,6 +29,10 @@ jobs:
       working-directory: c_impl
       run: just test
 
+    - name: Run ASan Tests
+      working-directory: c_impl
+      run: just asan
+
     - name: Static Analysis
       working-directory: c_impl
       run: just check
