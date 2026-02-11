@@ -5,8 +5,11 @@ from vhcalc.tools.docenum import DocEnum
 
 class ImageHashingFunction(DocEnum):
     """
-    >>> assert all(name_fn_img_hash in ImageHashingFunction.__doc__ for name_fn_img_hash in {"Average Hash computation",
-    ... "Perceptual Hash computation.", "Difference Hash computation. computes differences horizontally",
+    >>> assert all(name_fn_img_hash in ImageHashingFunction.__doc__ for name_fn_img_hash
+    ... in {
+    ... "Average Hash computation",
+    ... "Perceptual Hash computation.",
+    ... "Difference Hash computation. computes differences horizontally",
     ... "Wavelet Hash computation."})
     >>>
     >>> from pathlib import Path

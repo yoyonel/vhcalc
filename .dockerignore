@@ -93,4 +93,6 @@ venv/
 */*/*.swp
 */*/*/*.swp
 
-# End of https://github.com/themattrix/python-pypi-template/blob/master/.dockerignore
+# uv
+.venv
+uv.lock
