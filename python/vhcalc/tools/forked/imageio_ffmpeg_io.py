@@ -140,7 +140,8 @@ def read_frames_from_binary_stream(
         # ----- Load meta data
 
         # Wait for the log catcher to get the meta information
-        etime = time.time() + 10.0
+        # Increase timeout for network streams which may take longer to start
+        etime = time.time() + 30.0
         while log_catcher.is_alive() and not log_catcher.header and time.time() < etime:
             time.sleep(0.01)
 

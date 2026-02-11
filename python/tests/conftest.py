@@ -31,8 +31,10 @@ def big_buck_bunny_trailer(resource_video_path) -> Path:
 
 @pytest.fixture(autouse=True)
 def ftp_server_up(ftpserver, big_buck_bunny_trailer):
+    # Ensure overwrite is True to avoid warnings about existing files
+    # when the fixture is reused or session persistence occurs.
     file_uploaded = ftpserver.put_files(
-        str(big_buck_bunny_trailer), style="url", anon=True
+        str(big_buck_bunny_trailer), style="url", anon=True, overwrite=True
     )
     assert len(file_uploaded) == 1
     return file_uploaded[0]
