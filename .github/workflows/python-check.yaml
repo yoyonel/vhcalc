@@ -42,7 +42,7 @@ jobs:
 
             - name: Install FFmpeg (macOS)
               if: matrix.platform == 'macos-latest'
-              run: brew install ffmpeg
+              run: brew install ffmpeg || brew link ffmpeg
 
             - name: Install FFmpeg (Windows)
               if: matrix.platform == 'windows-latest'
