@@ -12,9 +12,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    defaults:
-      run:
-        working-directory: ./python
 
     steps:
       - uses: actions/checkout@v4
@@ -30,4 +27,3 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
-          packages-dir: python/dist/
