@@ -29,3 +29,8 @@ jobs:
 
     - name: Static Analysis
       run: just check
+
+    - name: Integration Test
+      run: |
+        # Verify help output matches expected regex
+        ./vhcalc -h | grep -E "Usage: .*vhcalc"
