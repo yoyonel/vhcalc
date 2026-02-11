@@ -69,6 +69,16 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["vhcalc"]
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.venv",
+  "/.git",
+  "/.cache",
+  "/tests",
+  "/docs",
+  "/tasks"
+]
+
 [tool.commitizen]
 name = "cz_conventional_commits"
 version = "0.8.0"
