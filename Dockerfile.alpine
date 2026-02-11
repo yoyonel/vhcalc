@@ -12,12 +12,18 @@ WORKDIR /app
 # Install build dependencies
 RUN apk add --no-cache build-base
 
-# Copy files
+# Copy dependency definitions
 COPY pyproject.toml uv.lock ./
+
+# Install dependencies (without project)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project --no-editable
+
+# Copy source
 COPY docs/README.md ./docs/README.md
 COPY vhcalc ./vhcalc
 
-# Install
+# Install project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-editable
 

@@ -13,6 +13,9 @@ WORKDIR /app
 # Install dependencies
 # Using --mount to leverage cache
 COPY pyproject.toml uv.lock ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project --no-editable
+
 # Need README for package metadata (if referenced in pyproject.toml)
 COPY docs/README.md ./docs/README.md
 # Need source code to install the project
