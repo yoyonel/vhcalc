@@ -70,7 +70,7 @@ tests/
 *.log
 
 # Sphinx documentation
-docs/
+docs/*
 !docs/README.md
 
 # PyBuilder
