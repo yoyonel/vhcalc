@@ -6,11 +6,14 @@
 .codeclimate.yml
 .travis.yml
 .taskcluster.yml
+.github/
 
 # Docker
 docker-compose.yml
 .docker
 Dockerfile
+Dockerfile.alpine
+Dockerfile.distroless
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -43,8 +46,6 @@ var/
 *.egg
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -59,6 +60,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+tests/
 
 # Translations
 *.mo
@@ -68,7 +70,7 @@ coverage.xml
 *.log
 
 # Sphinx documentation
-docs/_build/
+docs/
 
 # PyBuilder
 target/
@@ -93,4 +95,7 @@ venv/
 */*/*.swp
 */*/*/*.swp
 
-# End of https://github.com/themattrix/python-pypi-template/blob/master/.dockerignore
+# Other
+poetry.lock
+requirements.txt
+requirements-dev.txt

@@ -1,5 +1,5 @@
 # Stage 1: Builder
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.12-alpine AS builder
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
@@ -7,38 +7,41 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # Set working directory
 WORKDIR /app
 
+# Install build dependencies
+RUN apk add --no-cache build-base python3-dev musl-dev linux-headers
+
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
 
-# Copy dependencies first to leverage caching
+# Copy dependencies first
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies without the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-install-project
 
-# Copy the rest of the source code
+# Copy source
 COPY . .
 
-# Install the project in non-editable mode
+# Install project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-editable
 
 # Stage 2: Final
-FROM python:3.12-slim-bookworm
+FROM python:3.12-alpine
 
 ARG USERNAME=appuser
 ARG UID=1000
 ARG GID=1000
 
 # Create a non-root user
-RUN groupadd --gid $GID $USERNAME \
-    && useradd --uid $UID --gid $GID --create-home $USERNAME
+RUN addgroup -g $GID $USERNAME \
+    && adduser -D -u $UID -G $USERNAME $USERNAME
 
 # Set working directory
 WORKDIR /app
 
-# Copy the virtual environment from the builder stage
+# Copy venv from builder
 COPY --from=builder --chown=$USERNAME:$USERNAME /app/.venv /app/.venv
 
 # Set environment variables
@@ -46,9 +49,13 @@ ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+# Install runtime dependencies
+# ffmpeg for video processing, libjpeg-turbo and zlib for Pillow
+RUN apk add --no-cache ffmpeg libjpeg-turbo zlib
+
 # Switch to non-root user
 USER $USERNAME
 
-# Define the entrypoint
+# Define entrypoint
 ENTRYPOINT ["vhcalc"]
 CMD ["-", "-"]
