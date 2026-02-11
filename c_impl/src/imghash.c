@@ -1,3 +1,12 @@
+/**
+ * @file imghash.c
+ * @brief Implementation of Perceptual Hashing (pHash) algorithm.
+ *
+ * This implementation uses the Discrete Cosine Transform (DCT) to convert the image
+ * into the frequency domain. It then extracts the low-frequency components (top-left 8x8)
+ * and generates a 64-bit hash based on the median value of these coefficients.
+ */
+
 #include "imghash.h"
 #include <stdint.h>
 #include <stdlib.h>
@@ -8,9 +17,20 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-// 32x32 DCT-II implementation
-// Input: 32x32 image (row-major)
-// Output: 32x32 DCT coefficients (row-major)
+/**
+ * @brief Computes the 32x32 Discrete Cosine Transform (DCT-II).
+ *
+ * This function implements a separable 2D DCT using two 1D DCT passes (rows then columns).
+ * The formula used for the 1D DCT is:
+ *
+ * X_k = sum_{n=0}^{N-1} x_n * cos((pi/N) * (n + 0.5) * k)
+ *
+ * Note: This implementation does not include the standard scaling factors (alpha_k),
+ * as the relative order of coefficients (for median comparison) is preserved without them.
+ *
+ * @param input Pointer to the 32x32 input array (row-major).
+ * @param output Pointer to the 32x32 output array (row-major).
+ */
 static void dct32(const double *input, double *output) {
     double temp[32 * 32];
 
@@ -47,6 +67,22 @@ static int compare_doubles(const void *a, const void *b) {
     return 0;
 }
 
+/**
+ * @brief Computes the 64-bit Perceptual Hash of an image.
+ *
+ * Algorithm steps:
+ * 1. Convert the input 32x32 grayscale image to double precision.
+ * 2. Apply a 32x32 DCT-II to transform the image to the frequency domain.
+ * 3. Extract the top-left 8x8 low-frequency coefficients (representing the structural information).
+ * 4. Compute the median value of these 64 coefficients.
+ * 5. Construct the 64-bit hash:
+ *    - For each coefficient (row-major order):
+ *      - If coefficient > median, set the corresponding bit to 1.
+ *      - Otherwise, set the bit to 0.
+ *
+ * @param image Pointer to the 32x32 grayscale image data.
+ * @return The 64-bit perceptual hash.
+ */
 uint64_t phash_compute(const uint8_t *image) {
     double input[32 * 32];
     double dct_output[32 * 32];

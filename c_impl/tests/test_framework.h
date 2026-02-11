@@ -3,13 +3,22 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 static int tests_run = 0;
 static int tests_failed = 0;
 
 #define ASSERT_EQ_UINT64(expected, actual) do { \
     if ((expected) != (actual)) { \
-        printf("FAIL: %s:%d: Expected 0x%016lx, got 0x%016lx\n", __FILE__, __LINE__, (unsigned long)(expected), (unsigned long)(actual)); \
+        printf("\nFAIL: %s:%d: Expected 0x%016lx, got 0x%016lx\n", __FILE__, __LINE__, (unsigned long)(expected), (unsigned long)(actual)); \
+        tests_failed++; \
+        return; \
+    } \
+} while(0)
+
+#define ASSERT_DOUBLE_EQ(expected, actual, epsilon) do { \
+    if (fabs((double)(expected) - (double)(actual)) > (epsilon)) { \
+        printf("\nFAIL: %s:%d: Expected %f, got %f\n", __FILE__, __LINE__, (double)(expected), (double)(actual)); \
         tests_failed++; \
         return; \
     } \

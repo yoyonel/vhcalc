@@ -8,7 +8,7 @@ SRC = src/main.c src/imghash.c src/video_reader.c
 OBJ = src/main.o src/imghash.o src/video_reader.o
 TARGET = build/vhcalc
 TEST_SRC = tests/test_imghash.c
-TEST_OBJ = tests/test_imghash.o src/imghash.o
+TEST_OBJ = tests/test_imghash.o
 TEST_TARGET = build/test_vhcalc
 
 .PHONY: all clean test install uninstall asan
