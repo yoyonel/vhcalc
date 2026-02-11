@@ -6,6 +6,7 @@ from loguru import logger
 
 try:
     from pymediainfo import MediaInfo as _MediaInfo
+
     # Check if library is available
     _MediaInfo._get_library()
     MediaInfo = _MediaInfo

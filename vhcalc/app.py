@@ -31,7 +31,9 @@ def cli() -> None:
 
 
 @cli.command(
-    short_help="Compute image hashes from and to binaries stream (by default: stdin/out)"
+    short_help=(
+        "Compute image hashes from and to binaries stream (by default: stdin/out)"
+    )
 )
 @click.argument(
     "input_stream",
@@ -48,8 +50,10 @@ def cli() -> None:
     type=click.Choice(ImageHashingFunction.names()),
     default="PerceptualHashing",
     show_default=True,
-    # TODO: post validation and transform this option string to callable image hashing function
-    # see: [Python Enum support for click.Choice #605](https://github.com/pallets/click/issues/605#issuecomment-901099036)
+    # TODO: post validation and transform this option string to callable
+    # image hashing function
+    # see: [Python Enum support for click.Choice #605]
+    # (https://github.com/pallets/click/issues/605#issuecomment-901099036)
     help="The image hashing method to use.",
 )
 @click.option(
@@ -106,7 +110,10 @@ def mediainfo(filename: str) -> None:
 
 
 @cli.command(
-    short_help="extracting and exporting binary video hashes (fingerprints) from any video source"
+    short_help=(
+        "extracting and exporting binary video hashes (fingerprints) from "
+        "any video source"
+    )
 )
 @click.option(
     "--medias_pattern",
@@ -131,7 +138,9 @@ def mediainfo(filename: str) -> None:
 def export_imghash_from_media(
     medias_pattern: Iterable[pathlib.Path], output_file: pathlib.Path | None
 ) -> None:
-    """Click entrypoint for extracting and exporting binary video hashes (fingerprints) from any video source"""
+    """Click entrypoint for extracting and exporting binary video hashes
+    (fingerprints) from any video source
+    """
     for media in medias_pattern:
         services.export_imghash_from_media(media, output_file)
 

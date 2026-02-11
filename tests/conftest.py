@@ -22,7 +22,8 @@ def resource_video_path(test_data_dir):
 def big_buck_bunny_trailer(resource_video_path) -> Path:
     """
     [ffmpeg via pipe: stream 1, offset 0x30: partial file](https://stackoverflow.com/questions/76479157/ffmpeg-via-pipe-stream-1-offset-0x30-partial-file)
-    > *mp4* is compression mux type, then stream need can seek, but stdin stream (*pipe:0*) can only read.
+    > *mp4* is compression mux type, then stream need can seek,
+    > but stdin stream (*pipe:0*) can only read.
     > You must try another mux type like *flv*. And stdout stream(*pipe:1*) similar
     """
     return resource_video_path("big_buck_bunny_trailer_480p.mkv")

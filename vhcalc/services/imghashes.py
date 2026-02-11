@@ -29,8 +29,10 @@ def b2b_stream_to_imghash(
 
     Args:
         binary_stream (BufferedReader): binary stream read from media file input
-        chunk_size_in_frames (int): Chunk size in frames used for generating images hashes from media decompression.
-        fn_imagehash (ImageHashingFunction): ImageHash function for transforming PIL.Image to ImageHash
+        chunk_size_in_frames (int): Chunk size in frames used for generating
+            images hashes from media decompression.
+        fn_imagehash (ImageHashingFunction): ImageHash function for
+            transforming PIL.Image to ImageHash
 
     Yields:
         Iterable[bytes]: The next binary image hash from media input stream
@@ -61,7 +63,8 @@ def a2b_imghash(
     """
 
     Args:
-        binary_stream (BufferedReader): expected binary stream to read compatible with images hashes binary format.
+        binary_stream (BufferedReader): expected binary stream to read compatible
+            with images hashes binary format.
         chunk_size: size (in bits) used for chunk reading from input stream
 
     Returns:
@@ -90,8 +93,10 @@ def export_imghash_from_media(
 
     Args:
         input_media (Path): Path object targeting the input media.
-        output_file (Optional[Path]): Path object for the output file. If not given, a temporary file is created.
-        chunk_nb_seconds (int): Chunk size in seconds used for generating images hashes from media decompression.
+        output_file (Optional[Path]): Path object for the output file. If not given,
+            a temporary file is created.
+        chunk_nb_seconds (int): Chunk size in seconds used for generating images
+            hashes from media decompression.
         unlink_export_file (bool): Option for apply Path.unlink() on output file.
 
     Returns:

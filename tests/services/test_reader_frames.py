@@ -59,7 +59,7 @@ def test_build_reader_frames_from_url(ftp_server_up):
     except OSError:
         raise RuntimeError(
             "Can't extract metadata from url, maybe a problem with FFMPEG binary !"
-        )
+        ) from None
     print(metadata)
     nb_frames_read = len(list(gen_reader_frame))
     nb_frames_expected = metadata.nb_frames
