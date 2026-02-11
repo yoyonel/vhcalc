@@ -37,9 +37,10 @@ jobs:
                   inv env.init-dev --no-pre-commit
 
             - name: Setup FFmpeg
-              uses: AnimMouse/setup-ffmpeg@v1
+              uses: federicocarboni/setup-ffmpeg@v3
               with:
-                  version: 6.1
+                  ffmpeg-version: 6.1
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Style check
               run: |
