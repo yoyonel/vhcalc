@@ -10,13 +10,13 @@ def clean(ctx):
 @task
 def dist(ctx):
     """Build distribution"""
-    ctx.run("poetry build")
+    ctx.run("uv build")
 
 
 @task
 def docker(ctx):
     """Build docker image"""
-    ctx.run("poetry export -f requirements.txt -o requirements.txt")
+    ctx.run("uv export --format requirements-txt --output-file requirements.txt")
     user_name = "yoyonel"
     proj_name = "vhcalc"
     repo_name = f"{user_name}/{proj_name}"

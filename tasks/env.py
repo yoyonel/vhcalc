@@ -6,7 +6,8 @@ from tasks.common import VENV_PREFIX
 @task
 def clean(ctx):
     """Remove virtual environement"""
-    ctx.run("poetry env remove 3.9", warn=True)
+    # ctx.run("poetry env remove 3.9", warn=True)
+    ctx.run("rm -rf .venv", warn=True)
     # ["No source for code" message in Coverage.py](https://stackoverflow.com/a/3123157)
     ctx.run("rm -rf .coverage")
 
@@ -14,7 +15,7 @@ def clean(ctx):
 @task
 def init(ctx):
     """Install production dependencies"""
-    ctx.run("poetry install --only main")
+    ctx.run("uv sync --no-dev")
 
 
 @task
@@ -32,7 +33,7 @@ def setup_pre_commit_hook(ctx):
 @task(optional=["no-pre-commit"])
 def init_dev(ctx, no_pre_commit=False):
     """Install development dependencies and setup pre-commit hooks"""
-    ctx.run("poetry install")
+    ctx.run("uv sync")
     if not no_pre_commit:
         setup_pre_commit_hook(ctx)
 
@@ -41,7 +42,7 @@ def init_dev(ctx, no_pre_commit=False):
 def from_scratch(ctx):
     """build from scratch"""
     clean(ctx)
-    ctx.run("poetry lock")
+    ctx.run("uv lock")
     init_dev(ctx)
     ctx.run("inv test.cov")
     ctx.run("inv style")

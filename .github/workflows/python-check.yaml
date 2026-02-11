@@ -31,9 +31,14 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
 
+            - name: Install uv
+              uses: astral-sh/setup-uv@v5
+              with:
+                  enable-cache: true
+
             - name: Install dependencies
               run: |
-                  python -m pip install -U pip poetry invoke
+                  python -m pip install -U pip invoke
                   inv env.init-dev --no-pre-commit
 
             - name: Setup FFmpeg
@@ -51,10 +56,10 @@ jobs:
 
             - name: Run tests with coverage
               run: |
-                  poetry run python -c 'from imageio_ffmpeg import get_ffmpeg_exe; print(get_ffmpeg_exe());'
-                  poetry run python -c 'from imageio_ffmpeg import get_ffmpeg_version; print(get_ffmpeg_version());'
+                  uv run python -c 'from imageio_ffmpeg import get_ffmpeg_exe; print(get_ffmpeg_exe());'
+                  uv run python -c 'from imageio_ffmpeg import get_ffmpeg_version; print(get_ffmpeg_version());'
                   inv test.cov
-                  poetry run coverage lcov -o ./coverage/lcov.info
+                  uv run coverage lcov -o ./coverage/lcov.info
 
             - name: Coveralls
               # Error: Container action is only supported on Linux
