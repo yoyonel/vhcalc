@@ -18,6 +18,7 @@ jobs:
                 platform: [ubuntu-latest, windows-latest, macos-latest]
                 python-version: [3.9, '3.10', '3.11', '3.12']
         env:
+            IMAGEIO_FFMPEG_EXE: ffmpeg
             FTP_FIXTURE_SCOPE: session
         steps:
             - name: Check out
@@ -34,6 +35,20 @@ jobs:
               run: |
                   python -m pip install -U pip poetry invoke
                   inv env.init-dev --no-pre-commit
+
+            - name: Install FFmpeg (Linux)
+              if: runner.os == 'Linux'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y ffmpeg
+
+            - name: Install FFmpeg (macOS)
+              if: runner.os == 'macOS'
+              run: brew install ffmpeg
+
+            - name: Install FFmpeg (Windows)
+              if: runner.os == 'Windows'
+              run: choco install ffmpeg
 
             - name: Style check
               run: |
