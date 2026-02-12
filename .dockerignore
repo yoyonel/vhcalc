@@ -52,6 +52,7 @@ tests/
 
 # Documentation
 docs/
+!docs/README.md
 mkdocs.yml
 
 # Virtual environment
