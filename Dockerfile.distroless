@@ -1,0 +1,61 @@
+FROM python:3.12-slim-bookworm AS builder
+
+# Set environment variables
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
+
+WORKDIR /app
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+# Install system dependencies for libmediainfo and tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libmediainfo0v5 \
+    libzen0v5 \
+    libtinyxml2-9 \
+    libmms0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project --no-dev
+
+# Copy source code
+COPY . .
+
+# Install the project
+RUN uv sync --frozen --no-dev
+
+# Prepare shared libraries for distroless
+RUN mkdir -p /app/lib && \
+    cp $(find /usr/lib -name "libmediainfo.so.*" | head -n 1) /app/lib/ && \
+    cp $(find /usr/lib -name "libzen.so.*" | head -n 1) /app/lib/ && \
+    cp $(find /usr/lib -name "libtinyxml2.so.*" | head -n 1) /app/lib/ && \
+    cp $(find /usr/lib -name "libmms.so.*" | head -n 1) /app/lib/
+
+# Create a non-root user (UID 1000)
+RUN groupadd -r vhcalc && useradd -r -g vhcalc -u 1000 vhcalc
+
+# Final stage
+FROM gcr.io/distroless/python3-debian12
+
+WORKDIR /app
+
+# Copy the environment and application from the builder stage
+COPY --from=builder /app /app
+
+# Copy the user configuration
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+
+# Set environment variables
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONPATH="/app/.venv/lib/python3.12/site-packages" \
+    LD_LIBRARY_PATH="/app/lib:$LD_LIBRARY_PATH"
+
+# Switch to the non-root user
+USER vhcalc
+
+ENTRYPOINT ["vhcalc"]
+CMD ["-", "-"]

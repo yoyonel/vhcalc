@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.12-alpine AS builder
 
 # Set environment variables
 ENV UV_COMPILE_BYTECODE=1 \
@@ -9,27 +9,34 @@ WORKDIR /app
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
+# Install system dependencies for building (if needed)
+RUN apk add --no-cache build-base
+
 # Install dependencies
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
 
-# Copy the source code
+# Copy source code
 COPY . .
 
 # Install the project
 RUN uv sync --frozen --no-dev
 
 # Final stage
-FROM python:3.12-slim-bookworm
+FROM python:3.12-alpine
 
 # Set environment variables
 ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    IMAGEIO_FFMPEG_EXE=/usr/bin/ffmpeg
 
 WORKDIR /app
 
+# Install runtime dependencies
+RUN apk add --no-cache libmediainfo ffmpeg
+
 # Create a non-root user
-RUN groupadd -r vhcalc && useradd -r -g vhcalc -u 1000 vhcalc
+RUN addgroup -S vhcalc && adduser -S vhcalc -G vhcalc -u 1000
 
 # Copy the environment and application from the builder stage
 COPY --from=builder --chown=vhcalc:vhcalc /app /app
