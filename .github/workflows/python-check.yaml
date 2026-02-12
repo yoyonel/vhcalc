@@ -18,7 +18,6 @@ jobs:
                 platform: [ubuntu-latest, windows-latest, macos-latest]
                 python-version: [3.9, '3.10', '3.11', '3.12']
         env:
-            IMAGEIO_FFMPEG_EXE: ffmpeg
             FTP_FIXTURE_SCOPE: session
         steps:
             - name: Check out
@@ -40,11 +39,6 @@ jobs:
               run: |
                   uv pip install --system invoke
                   inv env.init-dev --no-pre-commit
-
-            - name: Setup FFmpeg
-              uses: AnimMouse/setup-ffmpeg@v1
-              with:
-                  version: 6.1
 
             - name: Style check
               run: |
