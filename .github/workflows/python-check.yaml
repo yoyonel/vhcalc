@@ -36,10 +36,19 @@ jobs:
                   python -m pip install -U pip poetry invoke
                   inv env.init-dev --no-pre-commit
 
-            - name: Setup FFmpeg
-              uses: AnimMouse/setup-ffmpeg@v1
-              with:
-                  version: 6.1
+            - name: Install FFmpeg (Linux)
+              if: runner.os == 'Linux'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y ffmpeg
+
+            - name: Install FFmpeg (macOS)
+              if: runner.os == 'macOS'
+              run: brew install ffmpeg
+
+            - name: Install FFmpeg (Windows)
+              if: runner.os == 'Windows'
+              run: choco install ffmpeg
 
             - name: Style check
               run: |
