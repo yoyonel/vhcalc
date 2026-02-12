@@ -1,9 +1,8 @@
 import numpy as np
-import pytest
-from PIL import Image
 from imagehash import ImageHash, phash
+from PIL import Image
 
-from vhcalc.tools.imghash import rawframe_to_imghash, FRAME_SIZE
+from vhcalc.tools.imghash import FRAME_SIZE, rawframe_to_imghash
 
 
 def test_rawframe_to_imghash_integration():
@@ -32,11 +31,14 @@ def test_rawframe_to_imghash_integration():
     assert len(hex_hash) > 0
 
     # Manually reconstruct to verify logic
-    arr = np.frombuffer(raw_frame_data, dtype=np.uint8).reshape((frame_width, frame_height))
+    arr = np.frombuffer(raw_frame_data, dtype=np.uint8).reshape(
+        (frame_width, frame_height)
+    )
     img = Image.fromarray(arr)
     expected_hash = phash(img)
 
     assert result_hash == expected_hash
+
 
 def test_numpy_pillow_compatibility():
     """
@@ -52,7 +54,7 @@ def test_numpy_pillow_compatibility():
 
     # Basic checks
     assert img.size == (100, 100)
-    assert img.mode == 'L'
+    assert img.mode == "L"
 
     # Check pixel values
     assert img.getpixel((0, 0)) == 0
