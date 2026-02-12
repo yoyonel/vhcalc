@@ -38,7 +38,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  uv pip install invoke
+                  uv pip install --system invoke
                   inv env.init-dev --no-pre-commit
 
             - name: Setup FFmpeg
