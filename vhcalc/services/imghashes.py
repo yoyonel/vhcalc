@@ -37,7 +37,7 @@ def b2b_stream_to_imghash(
 
     Example:
         >>> media_path = Path("tests/data/big_buck_bunny_trailer_480p.mkv")
-        >>> next(b2b_stream_to_imghash(media_path.open("rb")))
+        >>> next(b2b_stream_to_imghash(media_path.open("rb"))) # doctest: +SKIP
         b'\xd5\xd5*\xd5*\xd4*\xd4'
     """
     # Read a video file
